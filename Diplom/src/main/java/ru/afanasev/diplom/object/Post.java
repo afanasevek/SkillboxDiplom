@@ -38,37 +38,34 @@ public class Post {
 	@Column(name = "moderation_status")
 	private ModerationStatus moderationStatus;
 
-	@Column(name = "moderator_id", insertable = false, updatable = false)
-	private Integer moderatorId;
-
-	@Column(name = "user_id", insertable = false, updatable = false)
-	private Integer userId;
+	@ManyToOne()
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	private User user;
+	
+	@ManyToOne()
+	@JoinColumn(name = "moderator_id", referencedColumnName = "id")
+	private User moderator;
 
 	private LocalDateTime time;
 	@Column(name = "title")
 	private String title;
+	
+	@Column(name = "text")
+	private String text;
 
 	@Column(name = "view_count")
 	private Integer viewCount;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "user_id", referencedColumnName = "id")
-	private User user;
-	
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "moderator_id", referencedColumnName = "id")
-	private User moderator;
-	
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany()
 	@JoinTable(name = "tag2post",
 	joinColumns = {@JoinColumn(name = "post_id")},
 	inverseJoinColumns = {@JoinColumn(name = "tag_id")})
 	private List<Tag> listTags;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
+	@OneToMany(mappedBy = "post")
 	private List<PostVote> listVotes;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
+	@OneToMany(mappedBy = "post")
 	private List<PostComment> listComments;
 
 }

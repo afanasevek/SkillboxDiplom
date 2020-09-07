@@ -19,16 +19,6 @@ public class PostVote {
 	@Id
 	private Integer id;
 	
-	@Column(name = "user_id", insertable = false, updatable = false)
-	private Integer userId;
-	
-	@Column(name = "post_id", insertable = false, updatable = false)
-	private Integer postId;
-	
-	private LocalDateTime time;
-	
-	private Byte value;
-	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private User user;
@@ -36,5 +26,11 @@ public class PostVote {
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name= "post_id", referencedColumnName = "id")
 	private Post post;
+	
+	private LocalDateTime time;
+	
+	private Byte value;
+	
+
 	
 }

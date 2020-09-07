@@ -5,8 +5,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class DefaultController {
-@GetMapping("/")	
-public String defaultPage() {
-	return "index";
-}
+
+	@GetMapping("/")
+	public String defaultPage() {
+		return "redirect:/index.html";
+	}
+
 }
