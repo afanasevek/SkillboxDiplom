@@ -1,6 +1,7 @@
 package ru.afanasev.diplom.object;
 
 import java.time.LocalDateTime;
+
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -13,6 +14,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 @Data
 @Entity
 @Table(name = "post_comments")
@@ -21,15 +25,15 @@ public class PostComment {
 	@Id
 	private Integer id;
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne()
 	@JoinColumn(name = "parent_id", referencedColumnName = "id")
 	private PostComment postComment;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne()
 	@JoinColumn(name = "post_id", referencedColumnName = "id")
 	private Post post;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne()
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private User user;
 	
@@ -37,6 +41,16 @@ public class PostComment {
 	
 	private String text;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "postComment")
+	@OneToMany(mappedBy = "postComment")
 	private List<PostComment> listComments;
+	
+	public void addPostComment(PostComment postComment) {
+		listComments.add(postComment);
+		postComment.setPostComment(this);
+	}
+	
+	public void removePostComment(PostComment postComment) {
+		listComments.remove(postComment);
+		postComment.setPostComment(null);
+	}
 }

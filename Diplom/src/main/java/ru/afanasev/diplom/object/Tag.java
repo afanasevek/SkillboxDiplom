@@ -11,20 +11,38 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "tags")
 public class Tag {
 	
+	@Getter
+	@Setter
 	@Id
 	private Integer id;
 	
+	@Getter
+	@Setter
 	private String name;
 	
-	@ManyToMany(cascade = CascadeType.ALL)
+	@Getter
+	@ManyToMany()
 	@JoinTable(name = "tag2post",
 	joinColumns = {@JoinColumn(name = "tag_id")},
 	inverseJoinColumns = {@JoinColumn(name = "post_id")})
 	private List<Post> listPosts;
+	
+	public void addPost(Post post) {
+		listPosts.add(post);
+		post.getListTags().add(this);
+	}
+	
+	public void removePost(Post post) {
+		listPosts.remove(post);
+		post.getListTags().remove(this);
+	}
 }
