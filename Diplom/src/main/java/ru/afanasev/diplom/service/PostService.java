@@ -2,6 +2,8 @@ package ru.afanasev.diplom.service;
 
 import java.util.Map;
 
+import ru.afanasev.diplom.object.DTO.ApiPostDtoResponse;
+
 public interface PostService {
-	Map<String, Object>  getPosts(Integer offset, Integer limit, String mode);
+	ApiPostDtoResponse  getPosts(Integer offset, Integer limit, String mode);
 }

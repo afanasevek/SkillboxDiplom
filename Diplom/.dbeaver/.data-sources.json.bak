@@ -1,7 +1,7 @@
 {
 	"folders": {},
 	"connections": {
-		"postgres-jdbc-1744ab928dd-1caa45e248fe0dec": {
+		"postgres-jdbc-1744afc58ed-34535c4f5ad3e487": {
 			"provider": "postgresql",
 			"driver": "postgres-jdbc",
 			"name": "diplom",

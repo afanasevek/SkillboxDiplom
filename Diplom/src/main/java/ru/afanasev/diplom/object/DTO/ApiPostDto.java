@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ListPostDtoResponse {
+public class ApiPostDto {
 	
 	private Integer id;
 	private Long timestap;

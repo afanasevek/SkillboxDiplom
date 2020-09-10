@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,58 +21,47 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity	
 @Table(name = "users")
+@Data
 public class User {
 	
-	@Getter
-	@Setter
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Getter
-	@Setter
 	@Column(name = "is_moderator")
 	private Byte isModerator;
 	
-	@Getter
-	@Setter
 	@Column(name = "reg_time")
 	private LocalDateTime regTime;
 	
-	@Getter
-	@Setter
 	private String name;
 	
-	@Getter
-	@Setter
 	private String email;
 	
-	@Getter
-	@Setter
 	private String password;
 	
-	@Getter
-	@Setter
+
 	private String code;
 	
-	@Getter
-	@Setter
 	private String photo;
 	
-	@Getter
-	@OneToMany(mappedBy = "user")
+	@OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+	@Setter(value = AccessLevel.NONE)
 	private List<PostVote> listVotes;
 	
-	@Getter
-	@OneToMany(mappedBy = "user")
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+	@Setter(value = AccessLevel.NONE)
 	private List<PostComment> listComments;
 	
-	@Getter
-	@OneToMany(mappedBy = "user")
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+	@Setter(value = AccessLevel.NONE)
 	private List<Post> listPosts;
 	
-	@Getter
-	@OneToMany(mappedBy = "moderator")
+
+	@OneToMany(mappedBy = "moderator", cascade = CascadeType.PERSIST)
+	@Setter(value = AccessLevel.NONE)
 	private List<Post> listModPosts;
 	
 	public void addVote(PostVote postVote) {

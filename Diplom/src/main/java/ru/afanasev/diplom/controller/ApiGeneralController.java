@@ -1,63 +1,49 @@
 package ru.afanasev.diplom.controller;
+import java.io.IOException;
+
+import javax.persistence.EntityNotFoundException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import ru.afanasev.diplom.config.ConfigProperties;
 import ru.afanasev.diplom.object.DTO.InitDtoResponse;
+import ru.afanasev.diplom.object.DTO.mapper.PostMapper;
 
 @Controller
-@PropertySource("classpath:application.yml")
 @RequestMapping("/api")
 public class ApiGeneralController {
 	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	@Value("${constant.init.title}")
-	private String title;
-
-	@Value("${constant.init.subtitle}")
-	private String subtitle;
-
-	@Value("${constant.init.phone}")
-	private String phone;
-
-	@Value("${constant.init.email}")
-	private String email;
-
-	@Value("${constant.init.copyright}")
-	private String copyright;
-
-	@Value("${constant.init.copyrightFrom}")
-	private String copyrightFrom;
-
+	@Autowired
+	ConfigProperties configProperties;
+	
 	@GetMapping("/")
 	public String defaultPage() {
 		return "redirect:/index.html";
 	}
 	
-	@GetMapping("/init/")
-	ResponseEntity<InitDtoResponse> init() {
+	@GetMapping(value = "/init/", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody 
+	public InitDtoResponse init() {
 		try {
-			InitDtoResponse init = new InitDtoResponse(
-					title,
-					subtitle,
-					phone,
-					email,
-					copyright,
-					copyrightFrom
-					);
 			
-			return ResponseEntity.ok(init);
+			return  configProperties.getInit();
 		} catch (Exception e) {
 			logger.error(e.getStackTrace().toString());
 		}
 		
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		return configProperties.getInit();
 	}
 }

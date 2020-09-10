@@ -10,6 +10,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,22 +19,19 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "tags")
+@Data
 public class Tag {
 	
-	@Getter
-	@Setter
 	@Id
 	private Integer id;
 	
-	@Getter
-	@Setter
 	private String name;
 	
-	@Getter
-	@ManyToMany()
+	@ManyToMany(cascade = CascadeType.PERSIST)
 	@JoinTable(name = "tag2post",
 	joinColumns = {@JoinColumn(name = "tag_id")},
 	inverseJoinColumns = {@JoinColumn(name = "post_id")})
+	@Setter(value = AccessLevel.NONE)
 	private List<Post> listPosts;
 	
 	public void addPost(Post post) {

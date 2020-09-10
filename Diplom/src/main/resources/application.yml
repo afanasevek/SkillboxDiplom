@@ -11,11 +11,11 @@ spring:
     contexts: dev
     change-log: 
       classpath:db/changelog/db.changelog-master.xml
-constant:
-  init:
-    title: DevPub
-    subtitle: Рассказы разработчиков
-    phone: +7 999 516 80-45
-    email: afanasevek@gmail.com
-    copyright: Афанасьев Евгений
-    copyrightFrom: 2020
+      
+init:
+  title: DevPub
+  subtitle: Рассказы разработчиков
+  phone: +7 999 516 80-45
+  email: afanasevek@gmail.com
+  copyright: Афанасьев Евгений
+  copyrightFrom: 2020

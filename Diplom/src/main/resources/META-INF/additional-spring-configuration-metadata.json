@@ -15,8 +15,33 @@
     "description": "A description for 'url'"
   },
   {
-    "name": "constant.init",
+    "name": "init.title",
     "type": "java.lang.String",
-    "description": "A description for 'constant.init'"
+    "description": "A description for 'init.title'"
+  },
+  {
+    "name": "init.phone",
+    "type": "java.lang.String",
+    "description": "A description for 'init.phone'"
+  },
+  {
+    "name": "init.subtitle",
+    "type": "java.lang.String",
+    "description": "A description for 'init.subtitle'"
+  },
+  {
+    "name": "init.copyright",
+    "type": "java.lang.String",
+    "description": "A description for 'init.copyright'"
+  },
+  {
+    "name": "init.email",
+    "type": "java.lang.String",
+    "description": "A description for 'init.email'"
+  },
+  {
+    "name": "init.copyrightFrom",
+    "type": "java.lang.String",
+    "description": "A description for 'init.copyrightFrom'"
   }
 ]}

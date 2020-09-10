@@ -20,6 +20,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,71 +30,53 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "posts")
+@Data
 public class Post {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Getter
-	@Setter
 	private Integer id;
 
-	@Getter
-	@Setter
 	@Column(name = "is_active")
 	private Byte isActive;
 
 	
-	@Getter
-	@Setter
 	@Enumerated(EnumType.STRING)
 	@Column(name = "moderation_status")
 	private ModerationStatus moderationStatus;
-
 	
-	@Getter
-	@Setter
-	@ManyToOne()
+	@ManyToOne
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private User user;
 	
-	@Getter
-	@Setter
-	@ManyToOne()
+	@ManyToOne
 	@JoinColumn(name = "moderator_id", referencedColumnName = "id")
 	private User moderator;
 
-	@Getter
-	@Setter
 	private LocalDateTime time;
 	
-	@Getter
-	@Setter
 	@Column(name = "title")
 	private String title;
 	
-	@Getter
-	@Setter
 	@Column(name = "text")
 	private String text;
 
-	@Getter
-	@Setter
 	@Column(name = "view_count")
 	private Integer viewCount;
 	
-	@Getter
-	@ManyToMany()
+	@Setter(value = AccessLevel.NONE)
+	@ManyToMany(cascade = CascadeType.PERSIST)
 	@JoinTable(name = "tag2post",
 	joinColumns = {@JoinColumn(name = "post_id")},
 	inverseJoinColumns = {@JoinColumn(name = "tag_id")})
 	private List<Tag> listTags;
 	
-	@Getter
-	@OneToMany(mappedBy = "post")
+	@Setter(value = AccessLevel.NONE)
+	@OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST)
 	private List<PostVote> listVotes;
 	
-	@Getter
-	@OneToMany(mappedBy = "post")
+	@OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST)
+	@Setter(value = AccessLevel.NONE)
 	private List<PostComment> listComments;
 
 	public void addTag(Tag tag) {

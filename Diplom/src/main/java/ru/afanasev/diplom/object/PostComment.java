@@ -13,8 +13,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @NoArgsConstructor
 @Data
@@ -25,15 +27,15 @@ public class PostComment {
 	@Id
 	private Integer id;
 
-	@ManyToOne()
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "parent_id", referencedColumnName = "id")
 	private PostComment postComment;
 	
-	@ManyToOne()
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "post_id", referencedColumnName = "id")
 	private Post post;
 	
-	@ManyToOne()
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private User user;
 	
@@ -41,7 +43,8 @@ public class PostComment {
 	
 	private String text;
 	
-	@OneToMany(mappedBy = "postComment")
+	@OneToMany(mappedBy = "postComment",cascade = CascadeType.PERSIST)
+	@Setter(value = AccessLevel.NONE)
 	private List<PostComment> listComments;
 	
 	public void addPostComment(PostComment postComment) {

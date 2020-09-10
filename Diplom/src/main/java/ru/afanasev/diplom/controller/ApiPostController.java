@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import ru.afanasev.diplom.object.DTO.ApiPostDtoResponse;
 import ru.afanasev.diplom.service.PostService;
 import ru.afanasev.diplom.service.PostServiceImpl;
 
@@ -21,7 +22,7 @@ public class ApiPostController {
 	
 
 	@GetMapping("/post/")
-	ResponseEntity<Map<String, Object>> getAllPosts(@RequestParam Integer offset, @RequestParam Integer limit, @RequestParam String mode){
+	ResponseEntity<ApiPostDtoResponse> getAllPosts(@RequestParam Integer offset, @RequestParam Integer limit, @RequestParam String mode){
 		
 		return ResponseEntity.ok(postservice.getPosts(offset, limit, mode));
 	}

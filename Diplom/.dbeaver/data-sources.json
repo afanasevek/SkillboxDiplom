@@ -20,6 +20,20 @@
 					"postgresql.dd.plain.string": "false",
 					"postgresql.dd.tag.string": "false"
 				},
+				"auth-model": "native"
+			}
+		},
+		"h2_embedded-1746f7e9765-4993100f03f59f2f": {
+			"provider": "generic",
+			"driver": "h2_embedded",
+			"name": "test",
+			"save-password": true,
+			"show-system-objects": true,
+			"read-only": false,
+			"configuration": {
+				"database": "mem:test",
+				"url": "jdbc:h2:mem:test",
+				"type": "dev",
 				"auth-model": "native",
 				"handlers": {}
 			}

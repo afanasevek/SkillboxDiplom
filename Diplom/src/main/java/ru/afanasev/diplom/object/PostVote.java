@@ -23,11 +23,11 @@ public class PostVote {
 	@Id
 	private Integer id;
 	
-	@ManyToOne()
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private User user;
 	
-	@ManyToOne()
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name= "post_id", referencedColumnName = "id")
 	private Post post;
 	
