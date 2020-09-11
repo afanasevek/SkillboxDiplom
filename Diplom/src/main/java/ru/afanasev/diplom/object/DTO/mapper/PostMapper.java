@@ -23,6 +23,7 @@ public class PostMapper {
 		Integer dislikeCount = (int) post.getListVotes().stream().filter(v -> v.getValue() < 0).count();
 		postDto.setLikeCount(likeCount);
 		postDto.setDislikeCount(dislikeCount);
+		postDto.setCommentCount(post.getListComments().size());
 		postDto.setViewCount(post.getViewCount());
 		
 		return postDto;
