@@ -27,7 +27,7 @@ public class Tag {
 	
 	private String name;
 	
-	@ManyToMany(cascade = CascadeType.PERSIST)
+	@ManyToMany
 	@JoinTable(name = "tag2post",
 	joinColumns = {@JoinColumn(name = "tag_id")},
 	inverseJoinColumns = {@JoinColumn(name = "post_id")})

@@ -45,22 +45,22 @@ public class User {
 	
 	private String photo;
 	
-	@OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "user")
 	@Setter(value = AccessLevel.NONE)
 	private List<PostVote> listVotes;
 	
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "user")
 	@Setter(value = AccessLevel.NONE)
 	private List<PostComment> listComments;
 	
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "user")
 	@Setter(value = AccessLevel.NONE)
 	private List<Post> listPosts;
 	
 
-	@OneToMany(mappedBy = "moderator", cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "moderator")
 	@Setter(value = AccessLevel.NONE)
 	private List<Post> listModPosts;
 	

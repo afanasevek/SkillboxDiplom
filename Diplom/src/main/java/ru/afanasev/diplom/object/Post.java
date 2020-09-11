@@ -25,6 +25,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 
 @NoArgsConstructor
@@ -65,17 +66,17 @@ public class Post {
 	private Integer viewCount;
 	
 	@Setter(value = AccessLevel.NONE)
-	@ManyToMany(cascade = CascadeType.PERSIST)
+	@ManyToMany
 	@JoinTable(name = "tag2post",
 	joinColumns = {@JoinColumn(name = "post_id")},
 	inverseJoinColumns = {@JoinColumn(name = "tag_id")})
 	private List<Tag> listTags;
 	
 	@Setter(value = AccessLevel.NONE)
-	@OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "post")
 	private List<PostVote> listVotes;
 	
-	@OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "post")
 	@Setter(value = AccessLevel.NONE)
 	private List<PostComment> listComments;
 

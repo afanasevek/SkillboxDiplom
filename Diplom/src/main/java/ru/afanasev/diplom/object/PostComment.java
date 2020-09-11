@@ -27,15 +27,15 @@ public class PostComment {
 	@Id
 	private Integer id;
 
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "parent_id", referencedColumnName = "id")
 	private PostComment postComment;
 	
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "post_id", referencedColumnName = "id")
 	private Post post;
 	
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private User user;
 	
@@ -43,7 +43,7 @@ public class PostComment {
 	
 	private String text;
 	
-	@OneToMany(mappedBy = "postComment",cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "postComment")
 	@Setter(value = AccessLevel.NONE)
 	private List<PostComment> listComments;
 	

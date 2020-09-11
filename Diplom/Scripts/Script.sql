@@ -1,0 +1,1 @@
+insert into post_votes values (2, 1,2, now()::timestamp, -1); 

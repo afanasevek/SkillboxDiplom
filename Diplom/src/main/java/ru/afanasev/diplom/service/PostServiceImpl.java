@@ -36,12 +36,13 @@ public class PostServiceImpl implements PostService{
 	}
 
 	private List<ApiPostDto> getListPosts(Integer offset, Integer limit, String mode) {
-
+		
 		List<ApiPostDto> listPosts = new ArrayList<>();
 		Pageable page = PageRequest.of(offset,limit+offset);
 		List<Post> findPosts = new ArrayList();
 		switch (mode) {
 		case "recent": 
+
 			findPosts = postRepository.findModerationAndActivePostsSortbyRecent(page);
 			if (findPosts.isEmpty()) {
 				return listPosts;

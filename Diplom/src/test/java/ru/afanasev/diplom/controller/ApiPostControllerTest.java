@@ -62,8 +62,7 @@ class ApiPostControllerTest {
 	ApiPostDtoResponse apiPostDtoResponse;
 	
 	@BeforeEach
-	public void setUp() {
-		
+	public void setUp() {		
 
 		User user = new User();
 		user.setId(1);
@@ -72,7 +71,7 @@ class ApiPostControllerTest {
 		user.setPassword("test");
 		user.setIsModerator((byte)1);
 		user.setRegTime(LocalDateTime.now().minusMonths(4).minusDays(12));
-
+		userRepository.save(user);
 		
 		Post post = new Post();
 		post.setId(1);
@@ -84,7 +83,7 @@ class ApiPostControllerTest {
 		post.setText("testing so much");
 		post.setViewCount(150);
 		post.setTime(LocalDateTime.of(2005, 1, 1, 0, 0, 0));
-
+		postRepository.save(post);
 		
 		PostVote postVote = new PostVote();
 		postVote.setId(1);
@@ -92,8 +91,7 @@ class ApiPostControllerTest {
 		postVote.setUser(user);
 		postVote.setValue((byte)1);
 		postVote.setTime(LocalDateTime.now().minusMonths(1).minusDays(10));
-		postVoteRepository.save(postVote);
-		
+		postVoteRepository.save(postVote);		
 
 		User user1 = new User();
 		user1.setId(2);
@@ -102,7 +100,7 @@ class ApiPostControllerTest {
 		user1.setPassword("test2");
 		user1.setIsModerator((byte)1);
 		user1.setRegTime(LocalDateTime.now().minusMonths(10).minusDays(2));
-
+		userRepository.save(user1);
 		
 		Post post1 = new Post();
 		post1.setId(2);
@@ -114,16 +112,15 @@ class ApiPostControllerTest {
 		post1.setText("testing so much2");
 		post1.setViewCount(15000);
 		post1.setTime(LocalDateTime.of(1990, 1, 1, 0, 0, 0));
-
+		postRepository.save(post1);
 		
 		PostVote postVote1 = new PostVote();
+		postVote1.setUser(user1);
 		postVote1.setId(2);
 		postVote1.setPost(post1);
-		postVote1.setUser(user1);
 		postVote1.setValue((byte)1);
 		postVote1.setTime(LocalDateTime.now().minusMonths(1).minusDays(10));
 		postVoteRepository.save(postVote1);
-
 		
 		User user2 = new User();
 		user2.setId(3);
@@ -132,10 +129,8 @@ class ApiPostControllerTest {
 		user2.setPassword("test3");
 		user2.setIsModerator((byte)1);
 		user2.setRegTime(LocalDateTime.now().minusMonths(4).minusDays(12));
-
-		
-		
-		
+		userRepository.save(user2);
+				
 		Post post2 = new Post();
 		post2.setId(3);
 		post2.setIsActive((byte)-1);
@@ -146,6 +141,7 @@ class ApiPostControllerTest {
 		post2.setText("testing so much3");
 		post2.setViewCount(1510);
 		post2.setTime(LocalDateTime.of(2000, 1, 1, 0, 0, 0));
+		postRepository.save(post2);
 
 		
 		PostVote postVote2 = new PostVote();
@@ -154,7 +150,6 @@ class ApiPostControllerTest {
 		postVote2.setUser(user2);
 		postVote2.setValue((byte)1);
 		postVote2.setTime(LocalDateTime.now().minusMonths(1).minusDays(10));
-		
 		postVoteRepository.save(postVote2);
 		
 
@@ -201,8 +196,7 @@ class ApiPostControllerTest {
 	void testGetAllPosts() throws Exception {
 			 
 		mocMvc.perform(get("/api/post/").param("offset", "0").param("limit", "10").param("mode", "recent")).andDo(print())
-		.andExpect(status().isOk()).andExpect((ResultMatcher) content()
-			      .contentType("application/json;charset=UTF-8"));
+		.andExpect(status().isOk());
 	
 	}
 

@@ -13,22 +13,22 @@ import ru.afanasev.diplom.object.Post;
 @Repository
 public interface PostRepository extends PagingAndSortingRepository<Post, Integer>{
 	
-	@Query("select p from Post p where p.moderationStatus = ACCEPTED and p.isActive = 1")
+	@Query("select p from Post p where p.moderationStatus = 'ACCEPTED' and p.isActive = 1")
 	List<Post> findModerationAndActivePosts();
 	
-	@Query("select p from Post p where p.moderationStatus = 'accepted' and p.isActive = 1 and p.id = ?1")
+	@Query("select p from Post p where p.moderationStatus = 'ACCEPTED' and p.isActive = 1 and p.id = ?1")
 	Post findModerationAndActivePostsbyId(Integer id);
 	
-	@Query(value = "select p from Post p where p.moderationStatus = 'accepted' and p.isActive = 1 order by p.time desc")
+	@Query(value = "select p from Post p where p.moderationStatus = 'ACCEPTED' and p.isActive = 1 order by p.time desc")
 	List<Post>findModerationAndActivePostsSortbyRecent(Pageable page); 
 	
-	@Query(value = "select p from Post p where p.moderationStatus = 'accepted' and p.isActive = 1 order by size(p.listComments) desc")
+	@Query(value = "select p from Post p where p.moderationStatus = 'ACCEPTED' and p.isActive = 1 order by size(p.listComments) desc")
 	List<Post>findModerationAndActivePostsSortbyPopular(Pageable page); 
 	
-	@Query(value = "select p from Post p where p.moderationStatus = 'accepted' and p.isActive = 1 order by size(p.listVotes) desc")
+	@Query(value = "select p from Post p where p.moderationStatus = 'ACCEPTED' and p.isActive = 1 order by size(p.listVotes) desc")
 	List<Post>findModerationAndActivePostsSortbyBest(Pageable page); 
 	
-	@Query(value = "select p from Post p where p.moderationStatus = 'accepted' and p.isActive = 1 order by p.time")
+	@Query(value = "select p from Post p where p.moderationStatus = 'ACCEPTED' and p.isActive = 1 order by p.time")
 	List<Post>findModerationAndActivePostsSortbyEarly(Pageable page); 
 	
 }
