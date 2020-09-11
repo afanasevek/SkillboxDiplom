@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import ru.afanasev.diplom.object.Post;
@@ -14,7 +15,7 @@ import ru.afanasev.diplom.object.Post;
 public interface PostRepository extends PagingAndSortingRepository<Post, Integer>{
 	
 	@Query("select p from Post p where p.moderationStatus = 'ACCEPTED' and p.isActive = 1")
-	List<Post> findModerationAndActivePosts();
+	List<Post> findModerationAndActivePosts(Pageable page);
 	
 	@Query("select p from Post p where p.moderationStatus = 'ACCEPTED' and p.isActive = 1 and p.id = ?1")
 	Post findModerationAndActivePostsbyId(Integer id);
@@ -30,5 +31,8 @@ public interface PostRepository extends PagingAndSortingRepository<Post, Integer
 	
 	@Query(value = "select p from Post p where p.moderationStatus = 'ACCEPTED' and p.isActive = 1 order by p.time")
 	List<Post>findModerationAndActivePostsSortbyEarly(Pageable page); 
+	
+	@Query(value = "select p from Post p where p.moderationStatus = 'ACCEPTED' and p.isActive = 1 and (p.title like :query or p.text like :query)")
+	List<Post>findModerationAndActivePostsByQuery(Pageable page, @Param("query")String query); 
 	
 }

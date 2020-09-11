@@ -31,8 +31,15 @@ public class PostServiceImpl implements PostService{
 	
 	@Override
 	public ApiPostDtoResponse getPosts(Integer offset, Integer limit, String mode) {
-
+		
+		
 		return PostMapper.entityToApiPostDtoResponse(getListPosts(offset, limit, mode).size(), getListPosts(offset, limit, mode));
+	}
+	
+	@Override
+	public ApiPostDtoResponse getPostsByQuery(Integer offset, Integer limit, String query) {
+
+		return PostMapper.entityToApiPostDtoResponse(getListPostsByQuery(offset, limit, query).size(), getListPostsByQuery(offset, limit, query));
 	}
 
 	private List<ApiPostDto> getListPosts(Integer offset, Integer limit, String mode) {
@@ -75,6 +82,25 @@ public class PostServiceImpl implements PostService{
 
 			break;
 		}
+		
+		return listPosts;
+	}
+	
+	private List<ApiPostDto> getListPostsByQuery(Integer offset, Integer limit, String query) {
+		
+		List<ApiPostDto> listPosts = new ArrayList<>();
+		Pageable page = PageRequest.of(offset,limit+offset);
+		List<Post> findPosts = new ArrayList();
+		if(query.equals("")) {
+			findPosts = postRepository.findModerationAndActivePosts(page);
+		}else {
+			findPosts = postRepository.findModerationAndActivePostsByQuery(page, query);
+			if (findPosts.isEmpty()) {
+				return listPosts;
+			}
+		}
+		addListPosts(findPosts, listPosts);
+		
 		
 		return listPosts;
 	}
