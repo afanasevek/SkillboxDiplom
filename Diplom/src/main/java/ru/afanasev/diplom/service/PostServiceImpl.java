@@ -16,6 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import ru.afanasev.diplom.object.Post;
+import ru.afanasev.diplom.object.DTO.ApiPostByDateDto;
+import ru.afanasev.diplom.object.DTO.ApiPostByDateDtoResponse;
 import ru.afanasev.diplom.object.DTO.ApiPostDto;
 import ru.afanasev.diplom.object.DTO.ApiPostDtoResponse;
 import ru.afanasev.diplom.object.DTO.UserNoPhotoDto;
@@ -24,38 +26,45 @@ import ru.afanasev.diplom.object.DTO.mapper.UserMapper;
 import ru.afanasev.diplom.object.repository.PostRepository;
 
 @Service
-public class PostServiceImpl implements PostService{
+public class PostServiceImpl implements PostService {
 
 	@Autowired
 	private PostRepository postRepository;
-	
+
 	@Override
 	public ApiPostDtoResponse getPosts(Integer offset, Integer limit, String mode) {
-		
-		
-		return PostMapper.entityToApiPostDtoResponse(getListPosts(offset, limit, mode).size(), getListPosts(offset, limit, mode));
+
+		return PostMapper.entityToApiPostDtoResponse(getListPosts(offset, limit, mode).size(),
+				getListPosts(offset, limit, mode));
 	}
-	
+
 	@Override
 	public ApiPostDtoResponse getPostsByQuery(Integer offset, Integer limit, String query) {
 
-		return PostMapper.entityToApiPostDtoResponse(getListPostsByQuery(offset, limit, query).size(), getListPostsByQuery(offset, limit, query));
+		return PostMapper.entityToApiPostDtoResponse(getListPostsByQuery(offset, limit, query).size(),
+				getListPostsByQuery(offset, limit, query));
+	}
+	
+	public ApiPostByDateDtoResponse  getPostsByDate(Integer offset, Integer limit, String query) {
+
+		return PostMapper.entityToApiPostByDateDtoResponse(getListPostsByDate(offset, limit, query).size(),
+				getListPostsByDate(offset, limit, query));
 	}
 
 	private List<ApiPostDto> getListPosts(Integer offset, Integer limit, String mode) {
-		
+
 		List<ApiPostDto> listPosts = new ArrayList<>();
-		Pageable page = PageRequest.of(offset,limit+offset);
+		Pageable page = PageRequest.of(offset, limit + offset);
 		List<Post> findPosts = new ArrayList();
 		switch (mode) {
-		case "recent": 
+		case "recent":
 
 			findPosts = postRepository.findModerationAndActivePostsSortbyRecent(page);
 			if (findPosts.isEmpty()) {
 				return listPosts;
 			}
 			addListPosts(findPosts, listPosts);
-			
+
 			break;
 		case "popular":
 			findPosts = postRepository.findModerationAndActivePostsSortbyPopular(page);
@@ -82,44 +91,63 @@ public class PostServiceImpl implements PostService{
 
 			break;
 		}
-		
+
 		return listPosts;
 	}
-	
+
 	private List<ApiPostDto> getListPostsByQuery(Integer offset, Integer limit, String query) {
-		
+
 		List<ApiPostDto> listPosts = new ArrayList<>();
-		Pageable page = PageRequest.of(offset,limit+offset);
+		Pageable page = PageRequest.of(offset, limit + offset);
 		List<Post> findPosts = new ArrayList();
-		if(query.equals("")) {
+		if (query.isEmpty()) {
 			findPosts = postRepository.findModerationAndActivePosts(page);
-		}else {
+		} else {
 			findPosts = postRepository.findModerationAndActivePostsByQuery(page, query);
 			if (findPosts.isEmpty()) {
 				return listPosts;
 			}
 		}
 		addListPosts(findPosts, listPosts);
-		
-		
+
 		return listPosts;
 	}
 
-	
+	private List<ApiPostByDateDto> getListPostsByDate(Integer offset, Integer limit, String query) {
+
+		List<ApiPostByDateDto> listPosts = new ArrayList<>();
+		Pageable page = PageRequest.of(offset, limit + offset);
+		List<Post> findPosts = new ArrayList();
+		findPosts = postRepository.findModerationAndActivePostsByDate(page, query);
+		if (findPosts.isEmpty()) {
+			return listPosts;
+		}
+
+		addListPostsDate(findPosts, listPosts);
+
+		return listPosts;
+	}
+
 	public static String getAnnounce(String text) {
-		
+
 		String announce;
-		if (text.length()<200) {
+		if (text.length() < 200) {
 			announce = text.substring(0, text.length());
 			return announce;
 		}
 		announce = text.substring(0, 200);
-		
+
 		return announce;
 	}
+
 	private void addListPosts(List<Post> list, List<ApiPostDto> listPostDto) {
 		for (Post post : list) {
 			listPostDto.add(PostMapper.entityToApiPostDto(UserMapper.entitytoUserNoPhotoDto(post), post));
+		}
+	}
+	private void addListPostsDate(List<Post> list, List<ApiPostByDateDto> listPostDto) {
+		for (Post post : list) {
+			listPostDto.add(PostMapper.entityToApiPostByDateDto(UserMapper.entitytoUserNoPhotoDto(post), post));
 		}
 	}
 

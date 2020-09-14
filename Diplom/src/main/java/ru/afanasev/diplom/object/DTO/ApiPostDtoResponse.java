@@ -8,6 +8,6 @@ import lombok.Setter;
 
 @Data
 public class ApiPostDtoResponse {
-		Integer count;
-		List<ApiPostDto> listPosts;
+	private Integer count;
+	private List<ApiPostDto> listPosts;
 }

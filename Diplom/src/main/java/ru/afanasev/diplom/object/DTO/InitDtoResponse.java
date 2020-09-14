@@ -8,13 +8,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
 public class InitDtoResponse {
-	
+
 	private String title;
 	private String subtitle;
 	private String phone;

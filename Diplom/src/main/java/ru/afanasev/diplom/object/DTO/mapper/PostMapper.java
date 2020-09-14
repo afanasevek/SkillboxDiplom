@@ -4,6 +4,8 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import ru.afanasev.diplom.object.Post;
+import ru.afanasev.diplom.object.DTO.ApiPostByDateDto;
+import ru.afanasev.diplom.object.DTO.ApiPostByDateDtoResponse;
 import ru.afanasev.diplom.object.DTO.ApiPostDto;
 import ru.afanasev.diplom.object.DTO.ApiPostDtoResponse;
 import ru.afanasev.diplom.object.DTO.UserNoPhotoDto;
@@ -31,6 +33,32 @@ public class PostMapper {
 	
 	public static ApiPostDtoResponse entityToApiPostDtoResponse(Integer count, List<ApiPostDto> listPosts) {
 		ApiPostDtoResponse response = new ApiPostDtoResponse();
+		response.setCount(count);
+		response.setListPosts(listPosts);
+		
+		return response;
+	}
+	
+	
+	public static ApiPostByDateDto entityToApiPostByDateDto(UserNoPhotoDto user, Post post) {
+		ApiPostByDateDto postDto = new ApiPostByDateDto();
+		postDto.setId(post.getId());
+		postDto.setTimestap(Timestamp.valueOf(post.getTime()).getTime());
+		postDto.setUser(user);
+		postDto.setTitle(post.getTitle());
+		postDto.setAnnounce(PostServiceImpl.getAnnounce(Utils.removeHtmlTags(post.getText())));
+		Integer likeCount = (int) post.getListVotes().stream().filter(v -> v.getValue() > 0).count();
+		Integer dislikeCount = (int) post.getListVotes().stream().filter(v -> v.getValue() < 0).count();
+		postDto.setLikeCount(likeCount);
+		postDto.setDislikeCount(dislikeCount);
+		postDto.setCommentCount(post.getListComments().size());
+		postDto.setViewCount(post.getViewCount());
+		
+		return postDto;
+	}
+	
+	public static ApiPostByDateDtoResponse entityToApiPostByDateDtoResponse(Integer count, List<ApiPostByDateDto> listPosts) {
+		ApiPostByDateDtoResponse response = new ApiPostByDateDtoResponse();
 		response.setCount(count);
 		response.setListPosts(listPosts);
 		

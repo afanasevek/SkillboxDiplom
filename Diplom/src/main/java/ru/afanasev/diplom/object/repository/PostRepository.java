@@ -32,7 +32,9 @@ public interface PostRepository extends PagingAndSortingRepository<Post, Integer
 	@Query(value = "select p from Post p where p.moderationStatus = 'ACCEPTED' and p.isActive = 1 order by p.time")
 	List<Post>findModerationAndActivePostsSortbyEarly(Pageable page); 
 	
-	@Query(value = "select p from Post p where p.moderationStatus = 'ACCEPTED' and p.isActive = 1 and (p.title like :query or p.text like :query)")
+	@Query(value = "select p from Post p where p.moderationStatus = 'ACCEPTED' and p.isActive = 1 and (p.title like %:query% or p.text like %:query%)")
 	List<Post>findModerationAndActivePostsByQuery(Pageable page, @Param("query")String query); 
 	
+	@Query(value = "select p from Post p where p.moderationStatus = 'ACCEPTED' and p.isActive = 1 and cast(cast(p.time date) text) = :query")
+	List<Post>findModerationAndActivePostsByDate(Pageable page, @Param("query")String query); 
 }

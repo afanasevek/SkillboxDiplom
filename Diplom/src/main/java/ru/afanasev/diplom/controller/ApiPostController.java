@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import ru.afanasev.diplom.object.DTO.ApiPostByDateDtoResponse;
 import ru.afanasev.diplom.object.DTO.ApiPostDtoResponse;
 import ru.afanasev.diplom.service.PostService;
 import ru.afanasev.diplom.service.PostServiceImpl;
@@ -37,5 +38,14 @@ public class ApiPostController {
 		
 		return postservice.getPostsByQuery(offset, limit, query);
 	}
+	
+	@GetMapping(value = "/post/byDate", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ApiPostByDateDtoResponse getByDatePosts(@RequestParam Integer offset, @RequestParam Integer limit, @RequestParam String date) {
+		
+		
+		return postservice.getPostsByDate(offset, limit, date);
+	}
 }
+
  

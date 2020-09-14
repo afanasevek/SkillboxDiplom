@@ -7,8 +7,7 @@ import lombok.ToString;
 
 @Setter
 @Getter
-@ToString
 public class UserNoPhotoDto {
-	private Integer idInteger;
+	private Integer id;
 	private String name;
 }
