@@ -27,12 +27,13 @@ public class Tag {
 	
 	private String name;
 	
-	@ManyToMany
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinTable(name = "tag2post",
 	joinColumns = {@JoinColumn(name = "tag_id")},
 	inverseJoinColumns = {@JoinColumn(name = "post_id")})
 	@Setter(value = AccessLevel.NONE)
 	private List<Post> listPosts;
+	
 	
 	public void addPost(Post post) {
 		listPosts.add(post);

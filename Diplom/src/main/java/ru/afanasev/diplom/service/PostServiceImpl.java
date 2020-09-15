@@ -16,8 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import ru.afanasev.diplom.object.Post;
-import ru.afanasev.diplom.object.DTO.ApiPostByDateDto;
-import ru.afanasev.diplom.object.DTO.ApiPostByDateDtoResponse;
+import ru.afanasev.diplom.object.DTO.ApiPostAltDto;
+import ru.afanasev.diplom.object.DTO.ApiPostAltDtoResponse;
 import ru.afanasev.diplom.object.DTO.ApiPostDto;
 import ru.afanasev.diplom.object.DTO.ApiPostDtoResponse;
 import ru.afanasev.diplom.object.DTO.UserNoPhotoDto;
@@ -44,11 +44,18 @@ public class PostServiceImpl implements PostService {
 		return PostMapper.entityToApiPostDtoResponse(getListPostsByQuery(offset, limit, query).size(),
 				getListPostsByQuery(offset, limit, query));
 	}
-	
-	public ApiPostByDateDtoResponse  getPostsByDate(Integer offset, Integer limit, String query) {
+	@Override
+	public ApiPostAltDtoResponse  getPostsByDate(Integer offset, Integer limit, String query) {
 
-		return PostMapper.entityToApiPostByDateDtoResponse(getListPostsByDate(offset, limit, query).size(),
+		return PostMapper.entityToApiPostAltDtoResponse(getListPostsByDate(offset, limit, query).size(),
 				getListPostsByDate(offset, limit, query));
+	}
+	
+	@Override
+	public ApiPostAltDtoResponse  getPostsByTag(Integer offset, Integer limit, String query) {
+
+		return PostMapper.entityToApiPostAltDtoResponse(getListPostsByTag(offset, limit, query).size(),
+				getListPostsByTag(offset, limit, query));
 	}
 
 	private List<ApiPostDto> getListPosts(Integer offset, Integer limit, String mode) {
@@ -113,12 +120,27 @@ public class PostServiceImpl implements PostService {
 		return listPosts;
 	}
 
-	private List<ApiPostByDateDto> getListPostsByDate(Integer offset, Integer limit, String query) {
+	private List<ApiPostAltDto> getListPostsByDate(Integer offset, Integer limit, String query) {
 
-		List<ApiPostByDateDto> listPosts = new ArrayList<>();
+		List<ApiPostAltDto> listPosts = new ArrayList<>();
 		Pageable page = PageRequest.of(offset, limit + offset);
 		List<Post> findPosts = new ArrayList();
 		findPosts = postRepository.findModerationAndActivePostsByDate(page, query);
+		if (findPosts.isEmpty()) {
+			return listPosts;
+		}
+
+		addListPostsDate(findPosts, listPosts);
+
+		return listPosts;
+	}
+	
+	private List<ApiPostAltDto> getListPostsByTag(Integer offset, Integer limit, String query) {
+
+		List<ApiPostAltDto> listPosts = new ArrayList<>();
+		Pageable page = PageRequest.of(offset, limit + offset);
+		List<Post> findPosts = new ArrayList();
+		findPosts = postRepository.findModerationAndActivePostsByTag(page, query);
 		if (findPosts.isEmpty()) {
 			return listPosts;
 		}
@@ -145,9 +167,9 @@ public class PostServiceImpl implements PostService {
 			listPostDto.add(PostMapper.entityToApiPostDto(UserMapper.entitytoUserNoPhotoDto(post), post));
 		}
 	}
-	private void addListPostsDate(List<Post> list, List<ApiPostByDateDto> listPostDto) {
+	private void addListPostsDate(List<Post> list, List<ApiPostAltDto> listPostDto) {
 		for (Post post : list) {
-			listPostDto.add(PostMapper.entityToApiPostByDateDto(UserMapper.entitytoUserNoPhotoDto(post), post));
+			listPostDto.add(PostMapper.entityToApiPostAltDto(UserMapper.entitytoUserNoPhotoDto(post), post));
 		}
 	}
 

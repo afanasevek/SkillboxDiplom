@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ApiPostByDateDto {
+public class ApiPostAltDto {
 	
 	private Integer id;
 	private Long timestap;

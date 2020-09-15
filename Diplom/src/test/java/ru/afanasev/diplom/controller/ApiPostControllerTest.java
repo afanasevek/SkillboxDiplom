@@ -24,15 +24,17 @@ import ru.afanasev.diplom.object.ModerationStatus;
 import ru.afanasev.diplom.object.Post;
 import ru.afanasev.diplom.object.PostComment;
 import ru.afanasev.diplom.object.PostVote;
+import ru.afanasev.diplom.object.Tag;
 import ru.afanasev.diplom.object.User;
-import ru.afanasev.diplom.object.DTO.ApiPostByDateDto;
-import ru.afanasev.diplom.object.DTO.ApiPostByDateDtoResponse;
+import ru.afanasev.diplom.object.DTO.ApiPostAltDto;
+import ru.afanasev.diplom.object.DTO.ApiPostAltDtoResponse;
 import ru.afanasev.diplom.object.DTO.ApiPostDto;
 import ru.afanasev.diplom.object.DTO.ApiPostDtoResponse;
 import ru.afanasev.diplom.object.DTO.UserNoPhotoDto;
 import ru.afanasev.diplom.object.repository.PostCommentRepository;
 import ru.afanasev.diplom.object.repository.PostRepository;
 import ru.afanasev.diplom.object.repository.PostVoteRepository;
+import ru.afanasev.diplom.object.repository.TagRepository;
 import ru.afanasev.diplom.object.repository.UserRepository;
 
 @SpringBootTest
@@ -52,7 +54,8 @@ class ApiPostControllerTest {
 	private PostCommentRepository postCommentRepository;
 	@Autowired
 	private ObjectMapper objectMapper;
-
+	@Autowired
+	private TagRepository tagRepository;
 	@BeforeEach
 	public void setUp() {
 
@@ -101,7 +104,10 @@ class ApiPostControllerTest {
 		user1.setIsModerator((byte) 1);
 		user1.setRegTime(LocalDateTime.now().minusMonths(10).minusDays(2));
 		userRepository.save(user1);
+		
 
+
+		
 		Post post1 = new Post();
 		post1.setId(2);
 		post1.setIsActive((byte) 1);
@@ -112,6 +118,12 @@ class ApiPostControllerTest {
 		post1.setText("testing so much2");
 		post1.setViewCount(15000);
 		post1.setTime(LocalDateTime.of(1990, 1, 1, 0, 0, 0));
+		Tag tag = new Tag();
+		tag.setId(1);
+		tag.setName("hope");
+		tag.getListPosts().add(post1);
+		tagRepository.save(tag);
+
 		postRepository.save(post1);
 
 		PostVote postVote1 = new PostVote();
@@ -425,7 +437,7 @@ class ApiPostControllerTest {
 	@Test
 	void testGetAllPostsByDate() throws Exception {
 
-		ApiPostByDateDto post03 = new ApiPostByDateDto();
+		ApiPostAltDto post03 = new ApiPostAltDto();
 		post03.setId(4);
 		UserNoPhotoDto user03 = new UserNoPhotoDto();
 		user03.setId(3);
@@ -438,9 +450,9 @@ class ApiPostControllerTest {
 		post03.setDislikeCount(0);
 		post03.setCommentCount(0);
 		post03.setViewCount(1);
-		List<ApiPostByDateDto> testList = new ArrayList<>();
+		List<ApiPostAltDto> testList = new ArrayList<>();
 		testList.add(post03);
-		ApiPostByDateDtoResponse res = new ApiPostByDateDtoResponse();
+		ApiPostAltDtoResponse res = new ApiPostAltDtoResponse();
 		res.setCount(1);
 		res.setListPosts(testList);
 

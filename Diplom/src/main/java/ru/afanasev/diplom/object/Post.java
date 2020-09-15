@@ -66,17 +66,17 @@ public class Post {
 	private Integer viewCount;
 	
 	@Setter(value = AccessLevel.NONE)
-	@ManyToMany
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinTable(name = "tag2post",
 	joinColumns = {@JoinColumn(name = "post_id")},
 	inverseJoinColumns = {@JoinColumn(name = "tag_id")})
 	private List<Tag> listTags;
 	
 	@Setter(value = AccessLevel.NONE)
-	@OneToMany(mappedBy = "post")
+	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
 	private List<PostVote> listVotes;
 	
-	@OneToMany(mappedBy = "post")
+	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
 	@Setter(value = AccessLevel.NONE)
 	private List<PostComment> listComments;
 
@@ -100,11 +100,11 @@ public class Post {
 	}
 	public void addPPostComment(PostComment postComment) {
 		listComments.add(postComment);
-		postComment.setPost(this);
+		postComment.setPost(null);
 	}
 	
 	public void removePostComment(PostComment postComment) {
 		listComments.remove(postComment);
-		postComment.setPost(this);
+		postComment.setPost(null);
 	}
 }

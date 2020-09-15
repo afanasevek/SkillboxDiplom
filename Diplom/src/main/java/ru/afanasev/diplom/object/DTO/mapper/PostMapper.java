@@ -4,8 +4,8 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import ru.afanasev.diplom.object.Post;
-import ru.afanasev.diplom.object.DTO.ApiPostByDateDto;
-import ru.afanasev.diplom.object.DTO.ApiPostByDateDtoResponse;
+import ru.afanasev.diplom.object.DTO.ApiPostAltDto;
+import ru.afanasev.diplom.object.DTO.ApiPostAltDtoResponse;
 import ru.afanasev.diplom.object.DTO.ApiPostDto;
 import ru.afanasev.diplom.object.DTO.ApiPostDtoResponse;
 import ru.afanasev.diplom.object.DTO.UserNoPhotoDto;
@@ -40,8 +40,8 @@ public class PostMapper {
 	}
 	
 	
-	public static ApiPostByDateDto entityToApiPostByDateDto(UserNoPhotoDto user, Post post) {
-		ApiPostByDateDto postDto = new ApiPostByDateDto();
+	public static ApiPostAltDto entityToApiPostAltDto(UserNoPhotoDto user, Post post) {
+		ApiPostAltDto postDto = new ApiPostAltDto();
 		postDto.setId(post.getId());
 		postDto.setTimestap(Timestamp.valueOf(post.getTime()).getTime());
 		postDto.setUser(user);
@@ -57,8 +57,8 @@ public class PostMapper {
 		return postDto;
 	}
 	
-	public static ApiPostByDateDtoResponse entityToApiPostByDateDtoResponse(Integer count, List<ApiPostByDateDto> listPosts) {
-		ApiPostByDateDtoResponse response = new ApiPostByDateDtoResponse();
+	public static ApiPostAltDtoResponse entityToApiPostAltDtoResponse(Integer count, List<ApiPostAltDto> listPosts) {
+		ApiPostAltDtoResponse response = new ApiPostAltDtoResponse();
 		response.setCount(count);
 		response.setListPosts(listPosts);
 		

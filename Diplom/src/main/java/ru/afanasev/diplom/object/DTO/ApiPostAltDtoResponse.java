@@ -4,7 +4,7 @@ import java.util.List;
 
 import lombok.Data;
 @Data
-public class ApiPostByDateDtoResponse {
+public class ApiPostAltDtoResponse {
 	private Integer count;
-	private List<ApiPostByDateDto> listPosts;
+	private List<ApiPostAltDto> listPosts;
 }
