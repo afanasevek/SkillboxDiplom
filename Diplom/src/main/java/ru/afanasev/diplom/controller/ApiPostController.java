@@ -49,6 +49,7 @@ public class ApiPostController {
 	}
 
 	@GetMapping(value = "/post/byTag", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
 	public ApiPostAltDtoResponse getByTagPosts(@RequestParam Integer offset, @RequestParam Integer limit, @RequestParam String tag) {
 		return postservice.getPostsByTag(offset, limit, tag);
 	}

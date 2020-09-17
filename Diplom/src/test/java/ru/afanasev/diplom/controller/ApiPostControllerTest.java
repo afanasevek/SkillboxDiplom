@@ -121,9 +121,8 @@ class ApiPostControllerTest {
 		Tag tag = new Tag();
 		tag.setId(1);
 		tag.setName("hope");
-		tag.getListPosts().add(post1);
 		tagRepository.save(tag);
-
+		post1.addTag(tag);
 		postRepository.save(post1);
 
 		PostVote postVote1 = new PostVote();
@@ -459,6 +458,32 @@ class ApiPostControllerTest {
 		mocMvc.perform(get("/api/post/byDate").param("offset", "0").param("limit", "10").param("date", "2020-01-01"))
 				.andDo(print()).andExpect(status().isOk())
 				.andExpect(content().string(objectMapper.writeValueAsString(res)));
+	}
+	@Test
+	void testGetByTagPosts() throws Exception{
+	ApiPostAltDto test = new ApiPostAltDto();
+	test.setId(2);
+	test.setAnnounce("testing so much2");
+	test.setCommentCount(0);
+	test.setDislikeCount(0);
+	test.setTimestap(Timestamp.valueOf(LocalDateTime.of(1990, 1, 1, 0, 0, 0)).getTime());
+	test.setTitle("testing 2..");
+	test.setViewCount(15000);
+	test.setLikeCount(2);
+	UserNoPhotoDto user = new UserNoPhotoDto();
+	user.setId(2);
+	user.setName("test_user2");
+	test.setUser(user);
+	ApiPostAltDtoResponse res = new ApiPostAltDtoResponse();
+	List<ApiPostAltDto> listPosts = new ArrayList<>();
+	listPosts.add(test);
+	res.setListPosts(listPosts);
+	res.setCount(1);
+		
+		mocMvc.perform(get("/api/post/byTag").param("offset", "0").param("limit", "10").param("tag", "hope"))
+		.andDo(print()).andExpect(status().isOk())
+		.andExpect(content().string(objectMapper.writeValueAsString(res)));
+
 	}
 
 

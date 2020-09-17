@@ -2,11 +2,14 @@ package ru.afanasev.diplom.service;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 import javax.persistence.criteria.CriteriaBuilder.Case;
 
@@ -15,12 +18,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import liquibase.pro.packaged.iF;
 import ru.afanasev.diplom.object.Post;
 import ru.afanasev.diplom.object.DTO.ApiPostAltDto;
 import ru.afanasev.diplom.object.DTO.ApiPostAltDtoResponse;
 import ru.afanasev.diplom.object.DTO.ApiPostDto;
 import ru.afanasev.diplom.object.DTO.ApiPostDtoResponse;
+import ru.afanasev.diplom.object.DTO.CalendarDtoResponse;
 import ru.afanasev.diplom.object.DTO.UserNoPhotoDto;
+import ru.afanasev.diplom.object.DTO.mapper.CalendarMapper;
 import ru.afanasev.diplom.object.DTO.mapper.PostMapper;
 import ru.afanasev.diplom.object.DTO.mapper.UserMapper;
 import ru.afanasev.diplom.object.repository.PostRepository;
@@ -44,18 +50,28 @@ public class PostServiceImpl implements PostService {
 		return PostMapper.entityToApiPostDtoResponse(getListPostsByQuery(offset, limit, query).size(),
 				getListPostsByQuery(offset, limit, query));
 	}
+
 	@Override
-	public ApiPostAltDtoResponse  getPostsByDate(Integer offset, Integer limit, String query) {
+	public ApiPostAltDtoResponse getPostsByDate(Integer offset, Integer limit, String query) {
 
 		return PostMapper.entityToApiPostAltDtoResponse(getListPostsByDate(offset, limit, query).size(),
 				getListPostsByDate(offset, limit, query));
 	}
-	
+
 	@Override
-	public ApiPostAltDtoResponse  getPostsByTag(Integer offset, Integer limit, String query) {
+	public ApiPostAltDtoResponse getPostsByTag(Integer offset, Integer limit, String query) {
 
 		return PostMapper.entityToApiPostAltDtoResponse(getListPostsByTag(offset, limit, query).size(),
 				getListPostsByTag(offset, limit, query));
+	}
+
+	@Override
+	public CalendarDtoResponse getCalendar(Integer[] year) {
+		if (year == null) {
+			Integer[] currentYear = { 2020 };
+			return CalendarMapper.getCalendarDtoResponse(getYears(), getPostsCalendar(currentYear));
+		}
+		return CalendarMapper.getCalendarDtoResponse(getYears(), getPostsCalendar(year));
 	}
 
 	private List<ApiPostDto> getListPosts(Integer offset, Integer limit, String mode) {
@@ -120,6 +136,22 @@ public class PostServiceImpl implements PostService {
 		return listPosts;
 	}
 
+	private Set<Integer> getYears() {
+		return postRepository.findAllYears();
+	}
+
+	private Map<String, Integer> getPostsCalendar(Integer[] year) {
+		Map<String, Integer> countPostsYears = new TreeMap<>();
+		for (Integer y : year) {
+			for (String date : postRepository.findDateByYears(y)) {
+
+				countPostsYears.put(date, postRepository.findCountPostsByDate(date));
+			}
+		}
+
+		return countPostsYears;
+	}
+
 	private List<ApiPostAltDto> getListPostsByDate(Integer offset, Integer limit, String query) {
 
 		List<ApiPostAltDto> listPosts = new ArrayList<>();
@@ -134,7 +166,7 @@ public class PostServiceImpl implements PostService {
 
 		return listPosts;
 	}
-	
+
 	private List<ApiPostAltDto> getListPostsByTag(Integer offset, Integer limit, String query) {
 
 		List<ApiPostAltDto> listPosts = new ArrayList<>();
@@ -167,6 +199,7 @@ public class PostServiceImpl implements PostService {
 			listPostDto.add(PostMapper.entityToApiPostDto(UserMapper.entitytoUserNoPhotoDto(post), post));
 		}
 	}
+
 	private void addListPostsDate(List<Post> list, List<ApiPostAltDto> listPostDto) {
 		for (Post post : list) {
 			listPostDto.add(PostMapper.entityToApiPostAltDto(UserMapper.entitytoUserNoPhotoDto(post), post));

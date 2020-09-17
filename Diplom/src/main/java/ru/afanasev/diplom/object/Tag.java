@@ -1,5 +1,6 @@
 package ru.afanasev.diplom.object;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -21,25 +22,20 @@ import lombok.Setter;
 @Table(name = "tags")
 @Data
 public class Tag {
-	
+
 	@Id
 	private Integer id;
-	
+
 	private String name;
-	
-	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinTable(name = "tag2post",
-	joinColumns = {@JoinColumn(name = "tag_id")},
-	inverseJoinColumns = {@JoinColumn(name = "post_id")})
-	@Setter(value = AccessLevel.NONE)
-	private List<Post> listPosts;
-	
-	
+
+	@ManyToMany(mappedBy = "listTags")
+	private List<Post> listPosts = new ArrayList<>();
+
 	public void addPost(Post post) {
 		listPosts.add(post);
 		post.getListTags().add(this);
 	}
-	
+
 	public void removePost(Post post) {
 		listPosts.remove(post);
 		post.getListTags().remove(this);

@@ -1,6 +1,7 @@
 package ru.afanasev.diplom.object;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -70,15 +71,15 @@ public class Post {
 	@JoinTable(name = "tag2post",
 	joinColumns = {@JoinColumn(name = "post_id")},
 	inverseJoinColumns = {@JoinColumn(name = "tag_id")})
-	private List<Tag> listTags;
+	private List<Tag> listTags = new ArrayList<>();
 	
 	@Setter(value = AccessLevel.NONE)
 	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-	private List<PostVote> listVotes;
+	private List<PostVote> listVotes = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
 	@Setter(value = AccessLevel.NONE)
-	private List<PostComment> listComments;
+	private List<PostComment> listComments = new ArrayList<>();
 
 	public void addTag(Tag tag) {
 		listTags.add(tag);

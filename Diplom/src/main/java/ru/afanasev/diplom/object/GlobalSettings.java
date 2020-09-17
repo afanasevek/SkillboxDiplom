@@ -12,13 +12,13 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "global_settings")
 public class GlobalSettings {
-	
+
 	@Id
 	private Integer id;
-	
+
 	private String code;
-	
+
 	private String name;
-	
+
 	private String value;
 }

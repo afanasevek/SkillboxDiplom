@@ -2,7 +2,6 @@ package ru.afanasev.diplom.object;
 
 import java.time.LocalDateTime;
 
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,22 +18,20 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "post_votes")
 public class PostVote {
-	
+
 	@Id
 	private Integer id;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private User user;
-	
-	@ManyToOne
-	@JoinColumn(name= "post_id", referencedColumnName = "id")
-	private Post post;
-	
-	private LocalDateTime time;
-	
-	private Byte value;
-	
 
-	
+	@ManyToOne
+	@JoinColumn(name = "post_id", referencedColumnName = "id")
+	private Post post;
+
+	private LocalDateTime time;
+
+	private Byte value;
+
 }

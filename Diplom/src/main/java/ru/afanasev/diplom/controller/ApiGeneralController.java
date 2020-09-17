@@ -1,4 +1,5 @@
 package ru.afanasev.diplom.controller;
+
 import java.io.IOException;
 
 import javax.persistence.EntityNotFoundException;
@@ -14,36 +15,43 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import ru.afanasev.diplom.config.ConfigProperties;
+import ru.afanasev.diplom.object.DTO.CalendarDtoResponse;
 import ru.afanasev.diplom.object.DTO.InitDtoResponse;
 import ru.afanasev.diplom.object.DTO.mapper.PostMapper;
+import ru.afanasev.diplom.service.PostService;
 
 @Controller
 @RequestMapping("/api")
 public class ApiGeneralController {
-	
+
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
-	ConfigProperties configProperties;
-	
+	private ConfigProperties configProperties;
+	@Autowired
+	private PostService postService;
+
 	@GetMapping("/")
 	public String defaultPage() {
 		return "redirect:/index.html";
 	}
-	
+
 	@GetMapping(value = "/init/", produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody 
+	@ResponseBody
 	public InitDtoResponse init() {
-		try {
-			
-			return  configProperties.getInit();
-		} catch (Exception e) {
-			logger.error(e.getStackTrace().toString());
-		}
-		
+
 		return configProperties.getInit();
+
+	}
+
+	@GetMapping(value = "/calendar/", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public CalendarDtoResponse getCalendar(@RequestParam(required = false) Integer[] year) {
+		
+		return postService.getCalendar(year);
 	}
 }
