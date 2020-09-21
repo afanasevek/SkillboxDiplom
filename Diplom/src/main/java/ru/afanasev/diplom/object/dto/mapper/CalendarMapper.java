@@ -1,10 +1,10 @@
-package ru.afanasev.diplom.object.DTO.mapper;
+package ru.afanasev.diplom.object.dto.mapper;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ru.afanasev.diplom.object.DTO.CalendarDtoResponse;
+import ru.afanasev.diplom.object.dto.generalDtos.CalendarDtoResponse;
 
 public class CalendarMapper {
 

@@ -1,4 +1,4 @@
-package ru.afanasev.diplom.object.DTO;
+package ru.afanasev.diplom.object.dto.generalDtos;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;

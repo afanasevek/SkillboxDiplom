@@ -14,8 +14,8 @@ spring:
       
 init:
   title: DevPub
-  subtitle: Рассказы разработчиков
+  subtitle: Developer's Stories
   phone: +7 999 516 80-45
   email: afanasevek@gmail.com
-  copyright: Афанасьев Евгений
+  copyright: Afanasev Evgeny
   copyrightFrom: 2020

@@ -2,19 +2,23 @@ package ru.afanasev.diplom.service;
 
 import java.util.Map;
 
-import ru.afanasev.diplom.object.DTO.ApiPostAltDtoResponse;
-import ru.afanasev.diplom.object.DTO.ApiPostDtoResponse;
-import ru.afanasev.diplom.object.DTO.CalendarDtoResponse;
+import ru.afanasev.diplom.object.User;
+import ru.afanasev.diplom.object.dto.generalDtos.CalendarDtoResponse;
+import ru.afanasev.diplom.object.dto.postDtos.PostAltDtoResponse;
+import ru.afanasev.diplom.object.dto.postDtos.PostDtoByIdResponse;
+import ru.afanasev.diplom.object.dto.postDtos.PostDtoResponse;
 
 public interface PostService {
-	ApiPostDtoResponse getPosts(Integer offset, Integer limit, String mode);
+	PostDtoResponse getPosts(Integer offset, Integer limit, String mode);
 
-	ApiPostDtoResponse getPostsByQuery(Integer offset, Integer limit, String query);
+	PostDtoResponse getPostsByQuery(Integer offset, Integer limit, String query);
 
-	ApiPostAltDtoResponse getPostsByDate(Integer offset, Integer limit, String query);
+	PostAltDtoResponse getPostsByDate(Integer offset, Integer limit, String query);
 
-	ApiPostAltDtoResponse getPostsByTag(Integer offset, Integer limit, String query);
+	PostAltDtoResponse getPostsByTag(Integer offset, Integer limit, String query);
 
 	CalendarDtoResponse getCalendar(Integer[] year);
+	
+	 PostDtoByIdResponse getPostById(User user, Integer id);
 
 }

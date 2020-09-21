@@ -1,4 +1,4 @@
-package ru.afanasev.diplom.object.DTO;
+package ru.afanasev.diplom.object.dto.userDtos;
 
 import lombok.Getter;
 

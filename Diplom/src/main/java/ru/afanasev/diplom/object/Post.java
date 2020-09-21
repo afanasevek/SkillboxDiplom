@@ -2,7 +2,9 @@ package ru.afanasev.diplom.object;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -71,11 +73,11 @@ public class Post {
 	@JoinTable(name = "tag2post",
 	joinColumns = {@JoinColumn(name = "post_id")},
 	inverseJoinColumns = {@JoinColumn(name = "tag_id")})
-	private List<Tag> listTags = new ArrayList<>();
+	private Set<Tag> listTags = new LinkedHashSet<>();
 	
 	@Setter(value = AccessLevel.NONE)
 	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-	private List<PostVote> listVotes = new ArrayList<>();
+	private Set<PostVote> listVotes = new LinkedHashSet<>();
 	
 	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
 	@Setter(value = AccessLevel.NONE)

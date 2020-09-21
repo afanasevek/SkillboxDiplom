@@ -1,4 +1,4 @@
-package ru.afanasev.diplom.object.DTO;
+package ru.afanasev.diplom.object.dto.postDtos;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.Setter;
 
 @Data
-public class ApiPostDtoResponse {
+public class PostDtoResponse {
 	private Integer count;
-	private List<ApiPostDto> listPosts;
+	private List<PostDto> listPosts;
 }

@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
-import ru.afanasev.diplom.object.DTO.InitDtoResponse;
+import ru.afanasev.diplom.object.dto.generalDtos.InitDtoResponse;
 
 @Configuration
 public class ConfigProperties {

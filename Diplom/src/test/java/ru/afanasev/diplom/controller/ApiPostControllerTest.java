@@ -26,11 +26,11 @@ import ru.afanasev.diplom.object.PostComment;
 import ru.afanasev.diplom.object.PostVote;
 import ru.afanasev.diplom.object.Tag;
 import ru.afanasev.diplom.object.User;
-import ru.afanasev.diplom.object.DTO.ApiPostAltDto;
-import ru.afanasev.diplom.object.DTO.ApiPostAltDtoResponse;
-import ru.afanasev.diplom.object.DTO.ApiPostDto;
-import ru.afanasev.diplom.object.DTO.ApiPostDtoResponse;
-import ru.afanasev.diplom.object.DTO.UserNoPhotoDto;
+import ru.afanasev.diplom.object.dto.postDtos.PostAltDto;
+import ru.afanasev.diplom.object.dto.postDtos.PostAltDtoResponse;
+import ru.afanasev.diplom.object.dto.postDtos.PostDto;
+import ru.afanasev.diplom.object.dto.postDtos.PostDtoResponse;
+import ru.afanasev.diplom.object.dto.userDtos.UserNoPhotoDto;
 import ru.afanasev.diplom.object.repository.PostCommentRepository;
 import ru.afanasev.diplom.object.repository.PostRepository;
 import ru.afanasev.diplom.object.repository.PostVoteRepository;
@@ -179,7 +179,7 @@ class ApiPostControllerTest {
 	@Test
 	void testGetAllPostsRecent() throws Exception {
 
-		ApiPostDto post01 = new ApiPostDto();
+		PostDto post01 = new PostDto();
 		post01.setId(2);
 		UserNoPhotoDto user01 = new UserNoPhotoDto();
 		user01.setId(2);
@@ -193,7 +193,7 @@ class ApiPostControllerTest {
 		post01.setCommentCount(0);
 		post01.setViewCount(15000);
 
-		ApiPostDto post02 = new ApiPostDto();
+		PostDto post02 = new PostDto();
 		post02.setId(1);
 		UserNoPhotoDto user02 = new UserNoPhotoDto();
 		user02.setId(1);
@@ -207,7 +207,7 @@ class ApiPostControllerTest {
 		post02.setCommentCount(1);
 		post02.setViewCount(150);
 
-		ApiPostDto post03 = new ApiPostDto();
+		PostDto post03 = new PostDto();
 		post03.setId(4);
 		UserNoPhotoDto user03 = new UserNoPhotoDto();
 		user03.setId(3);
@@ -220,11 +220,11 @@ class ApiPostControllerTest {
 		post03.setDislikeCount(0);
 		post03.setCommentCount(0);
 		post03.setViewCount(1);
-		List<ApiPostDto> testList = new ArrayList<>();
+		List<PostDto> testList = new ArrayList<>();
 		testList.add(post03);
 		testList.add(post02);
 		testList.add(post01);
-		ApiPostDtoResponse res = new ApiPostDtoResponse();
+		PostDtoResponse res = new PostDtoResponse();
 		res.setCount(3);
 		res.setListPosts(testList);
 
@@ -236,7 +236,7 @@ class ApiPostControllerTest {
 	@Test
 	void testGetAllPostsPopular() throws Exception {
 
-		ApiPostDto post01 = new ApiPostDto();
+		PostDto post01 = new PostDto();
 		post01.setId(2);
 		UserNoPhotoDto user01 = new UserNoPhotoDto();
 		user01.setId(2);
@@ -250,7 +250,7 @@ class ApiPostControllerTest {
 		post01.setCommentCount(0);
 		post01.setViewCount(15000);
 
-		ApiPostDto post02 = new ApiPostDto();
+		PostDto post02 = new PostDto();
 		post02.setId(1);
 		UserNoPhotoDto user02 = new UserNoPhotoDto();
 		user02.setId(1);
@@ -264,7 +264,7 @@ class ApiPostControllerTest {
 		post02.setCommentCount(1);
 		post02.setViewCount(150);
 
-		ApiPostDto post03 = new ApiPostDto();
+		PostDto post03 = new PostDto();
 		post03.setId(4);
 		UserNoPhotoDto user03 = new UserNoPhotoDto();
 		user03.setId(3);
@@ -277,11 +277,11 @@ class ApiPostControllerTest {
 		post03.setDislikeCount(0);
 		post03.setCommentCount(0);
 		post03.setViewCount(1);
-		List<ApiPostDto> testList = new ArrayList<>();
+		List<PostDto> testList = new ArrayList<>();
 		testList.add(post02);
 		testList.add(post03);
 		testList.add(post01);
-		ApiPostDtoResponse res = new ApiPostDtoResponse();
+		PostDtoResponse res = new PostDtoResponse();
 		res.setCount(3);
 		res.setListPosts(testList);
 
@@ -294,7 +294,7 @@ class ApiPostControllerTest {
 	@Test
 	void testGetAllPostsBest() throws Exception {
 
-		ApiPostDto post01 = new ApiPostDto();
+		PostDto post01 = new PostDto();
 		post01.setId(2);
 		UserNoPhotoDto user01 = new UserNoPhotoDto();
 		user01.setId(2);
@@ -308,7 +308,7 @@ class ApiPostControllerTest {
 		post01.setCommentCount(0);
 		post01.setViewCount(15000);
 
-		ApiPostDto post02 = new ApiPostDto();
+		PostDto post02 = new PostDto();
 		post02.setId(1);
 		UserNoPhotoDto user02 = new UserNoPhotoDto();
 		user02.setId(1);
@@ -322,7 +322,7 @@ class ApiPostControllerTest {
 		post02.setCommentCount(1);
 		post02.setViewCount(150);
 
-		ApiPostDto post03 = new ApiPostDto();
+		PostDto post03 = new PostDto();
 		post03.setId(4);
 		UserNoPhotoDto user03 = new UserNoPhotoDto();
 		user03.setId(3);
@@ -335,11 +335,11 @@ class ApiPostControllerTest {
 		post03.setDislikeCount(0);
 		post03.setCommentCount(0);
 		post03.setViewCount(1);
-		List<ApiPostDto> testList = new ArrayList<>();
+		List<PostDto> testList = new ArrayList<>();
 		testList.add(post01);
 		testList.add(post02);
 		testList.add(post03);
-		ApiPostDtoResponse res = new ApiPostDtoResponse();
+		PostDtoResponse res = new PostDtoResponse();
 		res.setCount(3);
 		res.setListPosts(testList);
 
@@ -351,7 +351,7 @@ class ApiPostControllerTest {
 	@Test
 	void testGetAllPostsEarly() throws Exception {
 
-		ApiPostDto post01 = new ApiPostDto();
+		PostDto post01 = new PostDto();
 		post01.setId(2);
 		UserNoPhotoDto user01 = new UserNoPhotoDto();
 		user01.setId(2);
@@ -365,7 +365,7 @@ class ApiPostControllerTest {
 		post01.setCommentCount(0);
 		post01.setViewCount(15000);
 
-		ApiPostDto post02 = new ApiPostDto();
+		PostDto post02 = new PostDto();
 		post02.setId(1);
 		UserNoPhotoDto user02 = new UserNoPhotoDto();
 		user02.setId(1);
@@ -379,7 +379,7 @@ class ApiPostControllerTest {
 		post02.setCommentCount(1);
 		post02.setViewCount(150);
 
-		ApiPostDto post03 = new ApiPostDto();
+		PostDto post03 = new PostDto();
 		post03.setId(4);
 		UserNoPhotoDto user03 = new UserNoPhotoDto();
 		user03.setId(3);
@@ -392,11 +392,11 @@ class ApiPostControllerTest {
 		post03.setDislikeCount(0);
 		post03.setCommentCount(0);
 		post03.setViewCount(1);
-		List<ApiPostDto> testList = new ArrayList<>();
+		List<PostDto> testList = new ArrayList<>();
 		testList.add(post01);
 		testList.add(post02);
 		testList.add(post03);
-		ApiPostDtoResponse res = new ApiPostDtoResponse();
+		PostDtoResponse res = new PostDtoResponse();
 		res.setCount(3);
 		res.setListPosts(testList);
 
@@ -409,7 +409,7 @@ class ApiPostControllerTest {
 	@Test
 	void testGetAllPostsQuery() throws Exception {
 
-		ApiPostDto post03 = new ApiPostDto();
+		PostDto post03 = new PostDto();
 		post03.setId(4);
 		UserNoPhotoDto user03 = new UserNoPhotoDto();
 		user03.setId(3);
@@ -422,9 +422,9 @@ class ApiPostControllerTest {
 		post03.setDislikeCount(0);
 		post03.setCommentCount(0);
 		post03.setViewCount(1);
-		List<ApiPostDto> testList = new ArrayList<>();
+		List<PostDto> testList = new ArrayList<>();
 		testList.add(post03);
-		ApiPostDtoResponse res = new ApiPostDtoResponse();
+		PostDtoResponse res = new PostDtoResponse();
 		res.setCount(1);
 		res.setListPosts(testList);
 
@@ -436,7 +436,7 @@ class ApiPostControllerTest {
 	@Test
 	void testGetAllPostsByDate() throws Exception {
 
-		ApiPostAltDto post03 = new ApiPostAltDto();
+		PostAltDto post03 = new PostAltDto();
 		post03.setId(4);
 		UserNoPhotoDto user03 = new UserNoPhotoDto();
 		user03.setId(3);
@@ -449,9 +449,9 @@ class ApiPostControllerTest {
 		post03.setDislikeCount(0);
 		post03.setCommentCount(0);
 		post03.setViewCount(1);
-		List<ApiPostAltDto> testList = new ArrayList<>();
+		List<PostAltDto> testList = new ArrayList<>();
 		testList.add(post03);
-		ApiPostAltDtoResponse res = new ApiPostAltDtoResponse();
+		PostAltDtoResponse res = new PostAltDtoResponse();
 		res.setCount(1);
 		res.setListPosts(testList);
 
@@ -461,7 +461,7 @@ class ApiPostControllerTest {
 	}
 	@Test
 	void testGetByTagPosts() throws Exception{
-	ApiPostAltDto test = new ApiPostAltDto();
+	PostAltDto test = new PostAltDto();
 	test.setId(2);
 	test.setAnnounce("testing so much2");
 	test.setCommentCount(0);
@@ -474,8 +474,8 @@ class ApiPostControllerTest {
 	user.setId(2);
 	user.setName("test_user2");
 	test.setUser(user);
-	ApiPostAltDtoResponse res = new ApiPostAltDtoResponse();
-	List<ApiPostAltDto> listPosts = new ArrayList<>();
+	PostAltDtoResponse res = new PostAltDtoResponse();
+	List<PostAltDto> listPosts = new ArrayList<>();
 	listPosts.add(test);
 	res.setListPosts(listPosts);
 	res.setCount(1);

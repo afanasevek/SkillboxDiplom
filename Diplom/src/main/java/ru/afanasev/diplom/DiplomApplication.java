@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 import ru.afanasev.diplom.config.ConfigProperties;
-import ru.afanasev.diplom.object.DTO.InitDtoResponse;
+import ru.afanasev.diplom.object.dto.generalDtos.InitDtoResponse;
 
 @SpringBootApplication
 public class DiplomApplication {

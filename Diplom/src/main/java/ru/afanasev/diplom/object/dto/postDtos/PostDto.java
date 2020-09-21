@@ -1,11 +1,12 @@
-package ru.afanasev.diplom.object.DTO;
+package ru.afanasev.diplom.object.dto.postDtos;
 
 import lombok.Getter;
 import lombok.Setter;
+import ru.afanasev.diplom.object.dto.userDtos.UserNoPhotoDto;
 
 @Getter
 @Setter
-public class ApiPostDto {
+public class PostDto {
 
 	private Integer id;
 	private Long timestap;

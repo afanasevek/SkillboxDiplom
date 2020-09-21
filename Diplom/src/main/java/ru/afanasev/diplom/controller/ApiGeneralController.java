@@ -19,10 +19,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import ru.afanasev.diplom.config.ConfigProperties;
-import ru.afanasev.diplom.object.DTO.CalendarDtoResponse;
-import ru.afanasev.diplom.object.DTO.InitDtoResponse;
-import ru.afanasev.diplom.object.DTO.mapper.PostMapper;
+import ru.afanasev.diplom.object.dto.generalDtos.CalendarDtoResponse;
+import ru.afanasev.diplom.object.dto.generalDtos.InitDtoResponse;
+import ru.afanasev.diplom.object.dto.mapper.PostMapper;
+import ru.afanasev.diplom.object.dto.tagDtos.TagDtoResponse;
 import ru.afanasev.diplom.service.PostService;
+import ru.afanasev.diplom.service.TagService;
+import ru.afanasev.diplom.service.TagServiceImpl;
 
 @Controller
 @RequestMapping("/api")
@@ -34,6 +37,8 @@ public class ApiGeneralController {
 	private ConfigProperties configProperties;
 	@Autowired
 	private PostService postService;
+	@Autowired
+	private TagService tagService;
 
 	@GetMapping("/")
 	public String defaultPage() {
@@ -51,7 +56,14 @@ public class ApiGeneralController {
 	@GetMapping(value = "/calendar/", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public CalendarDtoResponse getCalendar(@RequestParam(required = false) Integer[] year) {
-		
+
 		return postService.getCalendar(year);
+	}
+
+	@GetMapping(value = "/tag/", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public TagDtoResponse getTag(@RequestParam(required = false) String tag) {
+
+		return tagService.getAllweight(tag);
 	}
 }
