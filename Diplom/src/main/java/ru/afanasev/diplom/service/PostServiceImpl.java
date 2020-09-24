@@ -63,12 +63,12 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public CalendarDtoResponse getCalendar(Integer[] year) {
+	public Map<String, Integer> getCalendar(Integer[] year) {
 		if (year == null) {
 			Integer[] currentYear = {Calendar.getInstance().get(Calendar.YEAR)};
-			return CalendarMapper.getCalendarDtoResponse(getYears(), getPostsCalendar(currentYear));
+			return getPostsCalendar(currentYear);
 		}
-		return CalendarMapper.getCalendarDtoResponse(getYears(), getPostsCalendar(year));
+		return getPostsCalendar(year);
 	}
 	
 	@Override
@@ -148,7 +148,8 @@ public class PostServiceImpl implements PostService {
 		return listPosts;
 	}
 
-	private Set<Integer> getYears() {
+	@Override
+	public Set<Integer> getYears() {
 		return postRepository.findAllYears();
 	}
 

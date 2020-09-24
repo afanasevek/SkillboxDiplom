@@ -1,6 +1,10 @@
 package ru.afanasev.diplom.object.dto.mapper;
 
+import java.util.Set;
+
+import antlr.collections.List;
 import ru.afanasev.diplom.object.dto.tagDtos.TagDto;
+import ru.afanasev.diplom.object.dto.tagDtos.TagDtoResponse;
 
 public class TagMapper {
 		
@@ -9,6 +13,11 @@ public class TagMapper {
 		tagDto.setName(name);
 		tagDto.setWeight(weight);
 		return tagDto;
+	}
+	public static TagDtoResponse entityToTagDtoResponse(Set<TagDto> tags) {
+		TagDtoResponse tagDtoResponse = new TagDtoResponse();
+		tagDtoResponse.setTags(tags);
+		return tagDtoResponse;
 	}
 	
 }

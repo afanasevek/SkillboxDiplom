@@ -26,14 +26,15 @@ public class TagServiceImpl implements TagService{
 	private PostRepository postRepository;
 
 	@Override
-	public TagDtoResponse getAllweight(String tag) {
+	public Set<TagDto> getAllweight(String tag) {
 		TagDtoResponse tagDtoResponse = new TagDtoResponse();
 		List<Double> listWeight = new ArrayList<>();
 		getWeight(listWeight, tag);
 		Collections.sort(listWeight);
 		Double maxValue = listWeight.get(listWeight.size() - 1);
+		Set<TagDto> setDtos = getListTagDto(maxValue, tag);
 		tagDtoResponse.setTags(getListTagDto(maxValue, tag));
-		return tagDtoResponse;
+		return setDtos;
 		
 
 	}
@@ -48,7 +49,6 @@ public class TagServiceImpl implements TagService{
 
 	private void getWeight(List<Double> listWeight, String tag) {
 		for (String tagName : getAllName(tag)) {
-			System.out.println(postRepository.findWeightByTag(tagName));
 			listWeight.add(postRepository.findWeightByTag(tagName));
 
 		}

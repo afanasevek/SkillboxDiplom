@@ -1,6 +1,7 @@
 package ru.afanasev.diplom.service;
 
 import java.util.Map;
+import java.util.Set;
 
 import ru.afanasev.diplom.object.User;
 import ru.afanasev.diplom.object.dto.generalDtos.CalendarDtoResponse;
@@ -17,8 +18,10 @@ public interface PostService {
 
 	PostAltDtoResponse getPostsByTag(Integer offset, Integer limit, String query);
 
-	CalendarDtoResponse getCalendar(Integer[] year);
+	Map<String, Integer> getCalendar(Integer[] year);
 	
 	 PostDtoByIdResponse getPostById(User user, Integer id);
+	 
+	 Set<Integer> getYears();
 
 }
