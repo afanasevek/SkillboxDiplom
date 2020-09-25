@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class DefaultController {
 
-	@PreAuthorize("permitAll()")
+//	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/")
 	public String defaultPage() {
 		return "redirect:/index.html";

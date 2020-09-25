@@ -2,7 +2,10 @@ package ru.afanasev.diplom.object;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,6 +15,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -23,7 +29,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "users")
 @Data
-public class User {
+public class User implements UserDetails{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -99,5 +105,45 @@ public class User {
 	public void removeModPost(Post post) {
 		listModPosts.remove(post);
 		post.setUser(null);
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		Set<Roles> roles= new HashSet<Roles>();
+		roles.add(Roles.USER);
+		if (isModerator == 1) {
+			roles.add(Roles.MODERATOR);
+		}
+		return roles;
+	}
+
+	@Override
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		return email;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return true;
 	}
 }
