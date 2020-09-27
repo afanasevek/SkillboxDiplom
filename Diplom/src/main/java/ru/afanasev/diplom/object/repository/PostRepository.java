@@ -51,20 +51,27 @@ public interface PostRepository extends PagingAndSortingRepository<Post, Integer
 
 	@Query(value = "select count(p) from Post p where cast(cast(p.time date) text) = :date")
 	Integer findCountPostsByDate(@Param("date") String date);
-	
+
 	@Query(value = "select  extract(year from p.time) from Post p where p.moderationStatus = 'ACCEPTED' and p.isActive = 1")
 	Set<Integer> findAllYears();
-	
+
 	@Query(value = "select cast((select count(p) from Post p join p.listTags t where t.name = ?1) double)/cast(count(p1) double) from  Post p1")
-	Double findWeightByTag(@Param("tag")String tag);
-	
+	Double findWeightByTag(@Param("tag") String tag);
+
 	@Modifying
-	@Query(value = "update Post p set p.viewCount = p.viewCount + 1 where p.id = ?1")
+	@Query(value = "update Post p set p.viewCount = (p.viewCount + 1) where p.id = ?1")
 	void increaseViewCount(Integer id);
-	
+
 	@Query(value = "select p.listComments from Post p where p.id = ?1 and p.moderationStatus = 'ACCEPTED' and p.isActive = 1")
 	List<PostComment> findCommentsByPostId(Integer id);
-	
+
 	@Query(value = "select p.listTags from Post p where p.id = ?1")
-	Set<Tag>findTagsByPostId(Integer id);
+	List<Tag> findTagsByPostId(Integer id);
+	
+	@Query(value = "select p from Post p where p.isActive = 1 and p.moderator = :moderator and p.moderationStatus = :status")
+	List<Post> findModerationPostsAcceptedOrDeclined(Pageable page, @Param("status") String status, @Param("moderator")User moderator);
+
+	@Query(value = "select p from Post p where p.isActive = 1 and p.moderationStatus = :status")
+	List<Post> findModerationPostsNew(Pageable page, @Param("status") String status);
+
 }

@@ -17,10 +17,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
 @Entity
 @Table(name = "tags")
-@Data
 public class Tag {
 
 	@Id
@@ -40,4 +38,25 @@ public class Tag {
 		listPosts.remove(post);
 		post.getListTags().remove(this);
 	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public List<Post> getListPosts() {
+		return listPosts;
+	}
+	
 }

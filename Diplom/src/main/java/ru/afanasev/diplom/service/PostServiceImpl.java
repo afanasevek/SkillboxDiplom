@@ -2,6 +2,7 @@ package ru.afanasev.diplom.service;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -11,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import ru.afanasev.diplom.object.ModerationStatus;
 import ru.afanasev.diplom.object.Post;
 import ru.afanasev.diplom.object.PostComment;
 import ru.afanasev.diplom.object.Tag;
@@ -26,6 +29,7 @@ import ru.afanasev.diplom.object.dto.postDtos.PostAltDtoResponse;
 import ru.afanasev.diplom.object.dto.postDtos.PostDto;
 import ru.afanasev.diplom.object.dto.postDtos.PostDtoByIdResponse;
 import ru.afanasev.diplom.object.dto.postDtos.PostDtoResponse;
+import ru.afanasev.diplom.object.dto.userDtos.UserNoPhotoDto;
 import ru.afanasev.diplom.object.repository.PostRepository;
 
 @Service
@@ -65,26 +69,50 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public Map<String, Integer> getCalendar(Integer[] year) {
 		if (year == null) {
-			Integer[] currentYear = {Calendar.getInstance().get(Calendar.YEAR)};
+			Integer[] currentYear = { Calendar.getInstance().get(Calendar.YEAR) };
 			return getPostsCalendar(currentYear);
 		}
 		return getPostsCalendar(year);
 	}
-	
+
+	@Transactional
 	@Override
-	public PostDtoByIdResponse getPostById(User user, Integer id) {
-		Post post = getPostById(id);;
-		if (user.getIsModerator()!=1||post.getUser().equals(user)==false) {
-			postRepository.increaseViewCount(id); 
+	public Post getPostById(User user, Integer id) {
+		Post post = getPostById(id);
+		if (user != null) {
+			if (user.getIsModerator() != 1 || post.getUser().equals(user) == false) {
+				increaseView(id);
+			}
+		} else {
+			increaseView(id);
 		}
-		
-		return PostMapper.entityToApiPostDtoByIdResponse(
-				post,
-				UserMapper.entitytoUserNoPhotoDto(post),
-				CommentMapper.entityToCommentDto(getListCommentsById(id)),
-				getTagByPostId(id));
+		return post;
 	}
 	
+	@Override
+	public List<PostAltDto> getListModerationPostByModerator(User moderator, Integer offset, Integer limit,
+			String status) {
+
+		List<PostAltDto> list = new ArrayList<>();
+		Pageable page = PageRequest.of(offset, limit + offset);
+		String statusValue;
+		switch (status) {
+		case "accepted":
+			statusValue = ModerationStatus.ACCEPTED.toString();
+			addListAltPosts(postRepository.findModerationPostsAcceptedOrDeclined(page, statusValue, moderator), list);
+			break;
+		case "declined":
+			statusValue = ModerationStatus.DECLINED.toString();
+			addListAltPosts(postRepository.findModerationPostsAcceptedOrDeclined(page, statusValue, moderator), list);
+			break;
+		case "new":
+			statusValue = ModerationStatus.NEW.toString();
+			addListAltPosts(postRepository.findModerationPostsNew(page, statusValue), list);
+			break;
+		}
+
+		return list;
+	}
 
 	private List<PostDto> getListPosts(Integer offset, Integer limit, String mode) {
 
@@ -175,7 +203,7 @@ public class PostServiceImpl implements PostService {
 			return listPosts;
 		}
 
-		addListPostsDate(findPosts, listPosts);
+		addListAltPosts(findPosts, listPosts);
 
 		return listPosts;
 	}
@@ -190,7 +218,7 @@ public class PostServiceImpl implements PostService {
 			return listPosts;
 		}
 
-		addListPostsDate(findPosts, listPosts);
+		addListAltPosts(findPosts, listPosts);
 
 		return listPosts;
 	}
@@ -213,25 +241,33 @@ public class PostServiceImpl implements PostService {
 		}
 	}
 
-	private void addListPostsDate(List<Post> list, List<PostAltDto> listPostDto) {
+	private void addListAltPosts(List<Post> list, List<PostAltDto> listPostDto) {
 		for (Post post : list) {
 			listPostDto.add(PostMapper.entityToApiPostAltDto(UserMapper.entitytoUserNoPhotoDto(post), post));
 		}
 	}
-	
+
 	private Post getPostById(Integer id) {
 		return postRepository.findById(id).get();
 	}
-	
-	private List <PostComment> getListCommentsById(Integer id){
+
+	@Override
+	public List<PostComment> getListCommentsById(Integer id) {
 		return postRepository.findCommentsByPostId(id);
 	}
-	private List<String> getTagByPostId(Integer id){
+
+	@Override
+	public List<String> getTagByPostId(Integer id) {
 		List<String> tags = new ArrayList<>();
-		for(Tag tag : postRepository.findTagsByPostId(id)) {
+		for (Tag tag : postRepository.findTagsByPostId(id)) {
+			System.out.println(tag.getName());
 			tags.add(tag.getName());
 		}
 		return tags;
+	}
+
+	private void increaseView(Integer id) {
+		postRepository.increaseViewCount(id);
 	}
 
 }

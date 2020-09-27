@@ -1,6 +1,7 @@
 package ru.afanasev.diplom.controller;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -12,7 +13,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,9 +25,11 @@ import ru.afanasev.diplom.object.dto.generalDtos.CalendarDtoResponse;
 import ru.afanasev.diplom.object.dto.generalDtos.InitDtoResponse;
 import ru.afanasev.diplom.object.dto.mapper.CalendarMapper;
 import ru.afanasev.diplom.object.dto.mapper.PostMapper;
+import ru.afanasev.diplom.object.dto.mapper.SettingsMapper;
 import ru.afanasev.diplom.object.dto.mapper.TagMapper;
 import ru.afanasev.diplom.object.dto.tagDtos.TagDtoResponse;
 import ru.afanasev.diplom.service.PostService;
+import ru.afanasev.diplom.service.SettingsService;
 import ru.afanasev.diplom.service.TagService;
 import ru.afanasev.diplom.service.TagServiceImpl;
 
@@ -43,18 +46,22 @@ public class ApiGeneralController {
 	
 	private final TagService tagService;
 	
+	private final SettingsService settingsService;
+	
 	public ApiGeneralController(
 			PostService postService,
 			TagService tagService,
-			ConfigProperties configProperties
+			ConfigProperties configProperties,
+			SettingsService settingsService
 			) {
 		this.configProperties =configProperties;
 		this.tagService = tagService;
 		this.postService = postService;
+		this.settingsService = settingsService;
 	}
 
 
-	@PreAuthorize("permitAll()")
+
 	@GetMapping(value = "/init", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public InitDtoResponse init() {
@@ -63,7 +70,7 @@ public class ApiGeneralController {
 
 	}
 
-	@PreAuthorize("permitAll()")
+
 	@GetMapping(value = "/calendar/", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public CalendarDtoResponse getCalendar(@RequestParam(required = false) Integer[] year) {
@@ -72,12 +79,18 @@ public class ApiGeneralController {
 				postService.getCalendar(year));
 	}
 
-	@PreAuthorize("permitAll()")
+
 	@GetMapping(value = "/tag/", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public TagDtoResponse getTag(@RequestParam(required = false) String tag) {
 		
 		return TagMapper.entityToTagDtoResponse(tagService.getAllweight(tag));
 	
+	}
+	
+	@GetMapping(value = "/settings",produces =  MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Map<String, Boolean> getSettings () {
+		return SettingsMapper.entityToSettingsDtoResponse(settingsService.getGlobalSettings());
 	}
 }

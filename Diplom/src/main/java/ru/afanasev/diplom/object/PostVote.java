@@ -13,8 +13,7 @@ import javax.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
-@Data
+
 @Entity
 @Table(name = "post_votes")
 public class PostVote {
@@ -34,4 +33,45 @@ public class PostVote {
 
 	private Byte value;
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Post getPost() {
+		return post;
+	}
+
+	public void setPost(Post post) {
+		this.post = post;
+	}
+
+	public LocalDateTime getTime() {
+		return time;
+	}
+
+	public void setTime(LocalDateTime time) {
+		this.time = time;
+	}
+
+	public Byte getValue() {
+		return value;
+	}
+
+	public void setValue(Byte value) {
+		this.value = value;
+	}
+
+	
 }

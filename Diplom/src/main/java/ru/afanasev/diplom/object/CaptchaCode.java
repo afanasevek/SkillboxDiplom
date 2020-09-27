@@ -9,8 +9,6 @@ import javax.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
-@Data
 @Entity
 @Table(name = "captcha_codes")
 public class CaptchaCode {
@@ -24,4 +22,38 @@ public class CaptchaCode {
 
 	@Column(name = "secret_code")
 	private String secretCode;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public LocalDateTime getTime() {
+		return time;
+	}
+
+	public void setTime(LocalDateTime time) {
+		this.time = time;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getSecretCode() {
+		return secretCode;
+	}
+
+	public void setSecretCode(String secretCode) {
+		this.secretCode = secretCode;
+	}
+	
+	
 }
