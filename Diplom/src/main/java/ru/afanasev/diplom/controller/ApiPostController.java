@@ -35,7 +35,7 @@ import ru.afanasev.diplom.service.PostService;
 import ru.afanasev.diplom.service.PostServiceImpl;
 
 @RestController
-@RequestMapping("/api/post")
+@RequestMapping("/api")
 public class ApiPostController {
 
 	private final PostService postservice;
@@ -45,28 +45,28 @@ public class ApiPostController {
 		this.postservice = postservice;
 	}
 
-	@GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/post", produces = MediaType.APPLICATION_JSON_VALUE)
 	public PostDtoResponse getAllPosts(@RequestParam Integer offset, @RequestParam Integer limit,
 			@RequestParam String mode) {
 
 		return postservice.getPosts(offset, limit, mode);
 	}
 
-	@GetMapping(value = "/search/", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/post/search/", produces = MediaType.APPLICATION_JSON_VALUE)
 	public PostDtoResponse getSearchPosts(@RequestParam Integer offset, @RequestParam Integer limit,
 			@RequestParam String query) {
 
 		return postservice.getPostsByQuery(offset, limit, query);
 	}
 
-	@GetMapping(value = "/byDate", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/post/byDate", produces = MediaType.APPLICATION_JSON_VALUE)
 	public PostAltDtoResponse getByDatePosts(@RequestParam Integer offset, @RequestParam Integer limit,
 			@RequestParam String date) {
 
 		return postservice.getPostsByDate(offset, limit, date);
 	}
 
-	@GetMapping(value = "/byTag", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/post/byTag", produces = MediaType.APPLICATION_JSON_VALUE)
 	public PostAltDtoResponse getByTagPosts(@RequestParam Integer offset, @RequestParam Integer limit,
 			@RequestParam String tag) {
 
@@ -75,7 +75,7 @@ public class ApiPostController {
 		return PostMapper.entityToApiPostAltDtoResponse(listPostsByTag.size(), listPostsByTag);
 	}
 
-	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/post/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public PostDtoByIdResponse getById(@AuthenticationPrincipal User user, @PathVariable Integer id) {
 
 		Post post = postservice.getPostById(user, id);
@@ -85,7 +85,7 @@ public class ApiPostController {
 				CommentMapper.entityToCommentDto(listComments), postservice.getTagByPostId(id));
 	}
 
-	@GetMapping(value = "/moderation", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/post/moderation", produces = MediaType.APPLICATION_JSON_VALUE)
 	public PostAltDtoResponse getModerationPosts(@AuthenticationPrincipal User user, @RequestParam Integer offset,
 			@RequestParam Integer limit, @RequestParam String status) {
 

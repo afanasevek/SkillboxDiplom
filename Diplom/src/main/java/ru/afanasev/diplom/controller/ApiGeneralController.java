@@ -79,7 +79,7 @@ public class ApiGeneralController {
 	}
 
 
-	@GetMapping(value = "/tag/", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/tag", produces = MediaType.APPLICATION_JSON_VALUE)
 	public TagDtoResponse getTag(@RequestParam(required = false) String tag) {
 		
 		return TagMapper.entityToTagDtoResponse(tagService.getAllweight(tag));

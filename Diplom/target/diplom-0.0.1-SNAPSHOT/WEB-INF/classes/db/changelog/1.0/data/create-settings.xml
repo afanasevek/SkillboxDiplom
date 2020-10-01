@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>   
+<databaseChangeLog   
+      xmlns="http://www.liquibase.org/xml/ns/dbchangelog"   
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"   
+      xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">   
+      <changeSet  author="Evgeny Afanasev"  id="create-settings">  
+    <insert tableName="global_settings">  
+        <column name="code"  value="MULTIUSER_MODE"/>  
+        <column name="name"  value="Многопользовательский режим"/>  
+        <column name="value"  value="yes"/>                          
+    </insert>
+    <insert tableName="global_settings">  
+        <column name="code"  value="POST_PREMODERATION"/>  
+        <column name="name"  value="Премодерация постов"/>  
+        <column name="value"  value="yes"/>                          
+    </insert> 
+    <insert tableName="global_settings">  
+        <column name="code"  value="STATISTICS_IS_PUBLIC"/>  
+        <column name="name"  value="Показывать всем статистику блога"/>  
+        <column name="value"  value="yes"/>                          
+    </insert>          							  		     
+      </changeSet>  
+</databaseChangeLog>   

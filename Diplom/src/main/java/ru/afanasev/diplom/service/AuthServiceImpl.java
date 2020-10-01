@@ -44,6 +44,7 @@ public class AuthServiceImpl implements AuthService {
 
 		Cage cage = new GCage();
 		String name = getImageName();
+		System.out.println(name);
 		String code;
 		OutputStream os = new FileOutputStream(name, false);
 		try {

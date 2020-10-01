@@ -18,8 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import ru.afanasev.diplom.service.UserService;
 
-@Configuration
-@EnableGlobalMethodSecurity(prePostEnabled = true) 
+@Configuration 
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	
 		@Autowired

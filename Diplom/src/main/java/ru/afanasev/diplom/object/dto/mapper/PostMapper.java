@@ -41,10 +41,10 @@ public class PostMapper {
 		return postDto;
 	}
 	
-	public static PostDtoResponse entityToApiPostDtoResponse(Integer count, List<PostDto> listPosts) {
+	public static PostDtoResponse entityToApiPostDtoResponse(Integer count, List<PostDto> posts) {
 		PostDtoResponse response = new PostDtoResponse();
 		response.setCount(count);
-		response.setListPosts(listPosts);
+		response.setPosts(posts);
 		
 		return response;
 	}

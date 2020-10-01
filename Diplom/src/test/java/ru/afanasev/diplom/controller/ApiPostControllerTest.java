@@ -226,7 +226,7 @@ class ApiPostControllerTest {
 		testList.add(post01);
 		PostDtoResponse res = new PostDtoResponse();
 		res.setCount(3);
-		res.setListPosts(testList);
+		res.setPosts(testList);
 
 		mocMvc.perform(get("/api/post/").param("offset", "0").param("limit", "10").param("mode", "recent"))
 				.andDo(print()).andExpect(status().isOk())
@@ -283,7 +283,7 @@ class ApiPostControllerTest {
 		testList.add(post01);
 		PostDtoResponse res = new PostDtoResponse();
 		res.setCount(3);
-		res.setListPosts(testList);
+		res.setPosts(testList);
 
 		mocMvc.perform(get("/api/post/").param("offset", "0").param("limit", "10").param("mode", "popular"))
 				.andDo(print()).andExpect(status().isOk())
@@ -341,7 +341,7 @@ class ApiPostControllerTest {
 		testList.add(post03);
 		PostDtoResponse res = new PostDtoResponse();
 		res.setCount(3);
-		res.setListPosts(testList);
+		res.setPosts(testList);
 
 		mocMvc.perform(get("/api/post/").param("offset", "0").param("limit", "10").param("mode", "best")).andDo(print())
 				.andExpect(status().isOk()).andExpect(content().string(objectMapper.writeValueAsString(res)));
@@ -398,7 +398,7 @@ class ApiPostControllerTest {
 		testList.add(post03);
 		PostDtoResponse res = new PostDtoResponse();
 		res.setCount(3);
-		res.setListPosts(testList);
+		res.setPosts(testList);
 
 		mocMvc.perform(get("/api/post/").param("offset", "0").param("limit", "10").param("mode", "early"))
 				.andDo(print()).andExpect(status().isOk())
@@ -426,7 +426,7 @@ class ApiPostControllerTest {
 		testList.add(post03);
 		PostDtoResponse res = new PostDtoResponse();
 		res.setCount(1);
-		res.setListPosts(testList);
+		res.setPosts(testList);
 
 		mocMvc.perform(get("/api/post/search/").param("offset", "0").param("limit", "10").param("query", "much3"))
 				.andDo(print()).andExpect(status().isOk())
