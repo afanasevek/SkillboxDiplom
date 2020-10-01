@@ -1,5 +1,7 @@
 package ru.afanasev.diplom.object.dto.authDtos;
 
+import ru.afanasev.diplom.object.dto.userDtos.UserLoginDtoResponse;
+
 public class LoginSuccessDtoResponse extends LoginDtoResponse{
 	
 	private UserLoginDtoResponse user;

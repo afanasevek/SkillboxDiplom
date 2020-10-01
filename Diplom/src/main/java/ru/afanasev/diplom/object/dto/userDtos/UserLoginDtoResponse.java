@@ -1,4 +1,4 @@
-package ru.afanasev.diplom.object.dto.authDtos;
+package ru.afanasev.diplom.object.dto.userDtos;
 
 public class UserLoginDtoResponse {
 	

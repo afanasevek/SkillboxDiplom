@@ -40,5 +40,7 @@ public interface PostService {
 	 List<PostAltDto> getListModerationPostByModerator(User moderator, Integer offset, Integer limit,String status);
 	 
 	 SendPostDtoResponse sendPost(SendPostDtoRequest request, User user);
+	 
+	 Integer getModerationCountPost();
 
 }

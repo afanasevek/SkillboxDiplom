@@ -42,10 +42,10 @@ public class PostServiceImpl implements PostService {
 	
 	private final PostRepository postRepository;
 	
-	private final static String TITLE_NOT_ENOUGTH_LENGTH_STRING = "Заголовок публикации слишком короткий";
-	private final static String TITLE_NULL = "Заголовок не установлен";
-	private final static String TEXT_NOT_ENOUGTH_LENGTH_STRING = "Текст  публикации слишком короткий";
-	private final static String TEXT_NULL = "Текст  не установлен";
+	private final static String TITLE_NOT_ENOUGTH_LENGTH_STRING = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ";
+	private final static String TITLE_NULL = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ";
+	private final static String TEXT_NOT_ENOUGTH_LENGTH_STRING = "пїЅпїЅпїЅпїЅпїЅ  пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ";
+	private final static String TEXT_NULL = "пїЅпїЅпїЅпїЅпїЅ  пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ";
 
 	public PostServiceImpl(PostRepository postRepository) {
 		super();
@@ -148,6 +148,10 @@ public class PostServiceImpl implements PostService {
 			sendPostToDb(request, user);
 			return new SendPostDtoResponse();
 		}
+	}
+	@Override
+	public Integer getModerationCountPost() {
+		return postRepository.getCountModerationPost();
 	}
 	
 	private void sendPostToDb (SendPostDtoRequest request, User user) {
