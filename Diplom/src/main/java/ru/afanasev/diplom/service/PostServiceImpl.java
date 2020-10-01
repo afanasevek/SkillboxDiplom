@@ -1,5 +1,6 @@
 package ru.afanasev.diplom.service;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -29,14 +30,27 @@ import ru.afanasev.diplom.object.dto.postDtos.PostAltDtoResponse;
 import ru.afanasev.diplom.object.dto.postDtos.PostDto;
 import ru.afanasev.diplom.object.dto.postDtos.PostDtoByIdResponse;
 import ru.afanasev.diplom.object.dto.postDtos.PostDtoResponse;
+import ru.afanasev.diplom.object.dto.postDtos.SendPostDtoRequest;
+import ru.afanasev.diplom.object.dto.postDtos.SendPostDtoResponse;
+import ru.afanasev.diplom.object.dto.postDtos.SendPostErrorDto;
 import ru.afanasev.diplom.object.dto.userDtos.UserNoPhotoDto;
 import ru.afanasev.diplom.object.repository.PostRepository;
 
 @Service
 public class PostServiceImpl implements PostService {
 
-	@Autowired
-	private PostRepository postRepository;
+	
+	private final PostRepository postRepository;
+	
+	private final static String TITLE_NOT_ENOUGTH_LENGTH_STRING = "Заголовок публикации слишком короткий";
+	private final static String TITLE_NULL = "Заголовок не установлен";
+	private final static String TEXT_NOT_ENOUGTH_LENGTH_STRING = "Текст  публикации слишком короткий";
+	private final static String TEXT_NULL = "Текст  не установлен";
+
+	public PostServiceImpl(PostRepository postRepository) {
+		super();
+		this.postRepository = postRepository;
+	}
 
 	@Override
 	public PostDtoResponse getPosts(Integer offset, Integer limit, String mode) {
@@ -60,10 +74,9 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public PostAltDtoResponse getPostsByTag(Integer offset, Integer limit, String query) {
-
-		return PostMapper.entityToApiPostAltDtoResponse(getListPostsByTag(offset, limit, query).size(),
-				getListPostsByTag(offset, limit, query));
+	public List<PostAltDto> getPostsByTag(Integer offset, Integer limit, String query) {
+		
+		return getListPostsByTag(offset, limit, query);
 	}
 
 	@Override
@@ -75,7 +88,7 @@ public class PostServiceImpl implements PostService {
 		return getPostsCalendar(year);
 	}
 
-	@Transactional
+	
 	@Override
 	public Post getPostById(User user, Integer id) {
 		Post post = getPostById(id);
@@ -113,7 +126,34 @@ public class PostServiceImpl implements PostService {
 
 		return list;
 	}
-
+	@Override
+	public SendPostDtoResponse sendPost(SendPostDtoRequest request, User user) {
+		if (request.getTitle().length()<3||request.getText().length()<50) {
+			SendPostErrorDto sendPostErrorDto = new SendPostErrorDto();
+			sendPostErrorDto.setResult(false);
+			if (request.getTitle().length()<3&&(request.getTitle().length()!=0)) {
+				sendPostErrorDto.addErrors("title", TITLE_NOT_ENOUGTH_LENGTH_STRING);
+			}
+			if (request.getTitle().length()==0) {
+				sendPostErrorDto.addErrors("title", TITLE_NULL);
+			}
+			if (request.getText().length()<3&&(request.getText().length()!=0)) {
+				sendPostErrorDto.addErrors("title", TEXT_NOT_ENOUGTH_LENGTH_STRING);
+			}
+			if (request.getText().length()==0) {
+				sendPostErrorDto.addErrors("title", TEXT_NULL);
+			}
+			return sendPostErrorDto;
+		} else {
+			sendPostToDb(request, user);
+			return new SendPostDtoResponse();
+		}
+	}
+	
+	private void sendPostToDb (SendPostDtoRequest request, User user) {
+		postRepository.save(PostMapper.reqToPost(request, user));
+	}
+	
 	private List<PostDto> getListPosts(Integer offset, Integer limit, String mode) {
 
 		List<PostDto> listPosts = new ArrayList<>();

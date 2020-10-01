@@ -1,7 +1,7 @@
 {
 	"folders": {},
 	"connections": {
-		"postgres-jdbc-174c73539a5-4df102efd33e0cdc": {
+		"postgres-jdbc-174d4510b50-55bc008bd6f93869": {
 			"provider": "postgresql",
 			"driver": "postgres-jdbc",
 			"name": "diplom",
@@ -13,10 +13,36 @@
 				"port": "5432",
 				"database": "diplom",
 				"url": "jdbc:postgresql://localhost:5432/diplom",
+				"home": "PostgreSQL Binaries",
 				"type": "dev",
 				"provider-properties": {
 					"@dbeaver-show-non-default-db@": "false",
 					"@dbeaver-show-template-db@": "false",
+					"@dbeaver-show-unavailable-db@": "false",
+					"postgresql.dd.plain.string": "false",
+					"postgresql.dd.tag.string": "false"
+				},
+				"auth-model": "native"
+			}
+		},
+		"postgres-jdbc-174dea7afef-16577b084de6c3c4": {
+			"provider": "postgresql",
+			"driver": "postgres-jdbc",
+			"name": "helidon",
+			"save-password": true,
+			"show-system-objects": true,
+			"read-only": false,
+			"configuration": {
+				"host": "localhost",
+				"port": "5432",
+				"database": "helidon",
+				"url": "jdbc:postgresql://localhost:5432/helidon",
+				"home": "PostgreSQL Binaries",
+				"type": "dev",
+				"provider-properties": {
+					"@dbeaver-show-non-default-db@": "false",
+					"@dbeaver-show-template-db@": "false",
+					"@dbeaver-show-unavailable-db@": "false",
 					"postgresql.dd.plain.string": "false",
 					"postgresql.dd.tag.string": "false"
 				},

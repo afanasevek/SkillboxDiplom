@@ -19,11 +19,17 @@ import ru.afanasev.diplom.object.repository.TagRepository;
 @Service
 public class TagServiceImpl implements TagService{
 
-	@Autowired
-	private TagRepository tagRepository;
+	private final TagRepository tagRepository;
+	
+	private final PostRepository postRepository;
+	
+	
 
-	@Autowired
-	private PostRepository postRepository;
+	public TagServiceImpl(TagRepository tagRepository, PostRepository postRepository) {
+		super();
+		this.tagRepository = tagRepository;
+		this.postRepository = postRepository;
+	}
 
 	@Override
 	public Set<TagDto> getAllweight(String tag) {

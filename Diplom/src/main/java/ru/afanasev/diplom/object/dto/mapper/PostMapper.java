@@ -1,9 +1,14 @@
 package ru.afanasev.diplom.object.dto.mapper;
 
 import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.TimeZone;
 
+import ru.afanasev.diplom.object.ModerationStatus;
 import ru.afanasev.diplom.object.Post;
+import ru.afanasev.diplom.object.Tag;
 import ru.afanasev.diplom.object.User;
 import ru.afanasev.diplom.object.dto.commentDtos.CommentDto;
 import ru.afanasev.diplom.object.dto.postDtos.PostAltDto;
@@ -11,6 +16,7 @@ import ru.afanasev.diplom.object.dto.postDtos.PostAltDtoResponse;
 import ru.afanasev.diplom.object.dto.postDtos.PostDto;
 import ru.afanasev.diplom.object.dto.postDtos.PostDtoByIdResponse;
 import ru.afanasev.diplom.object.dto.postDtos.PostDtoResponse;
+import ru.afanasev.diplom.object.dto.postDtos.SendPostDtoRequest;
 import ru.afanasev.diplom.object.dto.tagDtos.TagDto;
 import ru.afanasev.diplom.object.dto.userDtos.UserNoPhotoDto;
 import ru.afanasev.diplom.service.PostServiceImpl;
@@ -97,5 +103,27 @@ public class PostMapper {
 		postDtoByIdResponse.setTags(tags);
 
 		return postDtoByIdResponse;
+	}
+	
+	public static Post reqToPost(SendPostDtoRequest request, User user) {
+		Post post = new Post();
+		LocalDateTime time =  LocalDateTime.ofInstant(Instant.ofEpochMilli(request.getTimestamp()), TimeZone.getDefault().toZoneId());
+		if (time.isBefore(LocalDateTime.now())) {
+			time = LocalDateTime.now();
+		}
+		post.setTime(time);
+		post.setIsActive(request.getActive());
+		post.setUser(user);
+		post.setTitle(request.getTitle());
+		post.setText(request.getText());
+		post.setModerationStatus(ModerationStatus.NEW);
+		for(String nameTag : request.getTags()) {
+			Tag tag = new Tag();
+			tag.setName(nameTag);
+			post.addTag(tag);
+		}
+		
+		return post;
+		
 	}
 }

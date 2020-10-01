@@ -5,8 +5,18 @@ import java.util.Set;
 
 import lombok.Data;
 
-@Data
+
 public class TagDtoResponse {
 	
 	private Set<TagDto> tags;
+
+	public Set<TagDto> getTags() {
+		return tags;
+	}
+
+	public void setTags(Set<TagDto> tags) {
+		this.tags = tags;
+	}
+	
+	
 }

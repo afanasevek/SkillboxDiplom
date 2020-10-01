@@ -11,9 +11,18 @@ import ru.afanasev.diplom.object.repository.UserRepository;
 @Service
 public class UserServiceImpl implements UserService{
 	
-	@Autowired
-	UserRepository userRepository;
 	
+	private final UserRepository userRepository;
+	
+	
+	
+	public UserServiceImpl(UserRepository userRepository) {
+		super();
+		this.userRepository = userRepository;
+	}
+
+
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		

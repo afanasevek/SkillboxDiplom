@@ -16,8 +16,14 @@ import ru.afanasev.diplom.object.repository.SettingsRepository;
 @Service
 public class SettingsServiceImpl implements SettingsService {
 
-	@Autowired
-	SettingsRepository settingsRepository;
+	private final SettingsRepository settingsRepository;
+
+	
+	
+	public SettingsServiceImpl(SettingsRepository settingsRepository) {
+		super();
+		this.settingsRepository = settingsRepository;
+	}
 
 	@Override
 	public List<GlobalSettings> getGlobalSettings() {

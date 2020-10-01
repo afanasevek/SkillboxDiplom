@@ -4,7 +4,7 @@
 ### DBeaver ###
 # ide config file
 .dbeaver-data-sources*.xml
-
+/.dbeaver
 ### Eclipse ###
 .metadata
 bin/
@@ -17,6 +17,7 @@ local.properties
 .settings/
 .loadpath
 .recommenders
+/.mvn
 
 # External tool builders
 .externalToolBuilders/

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import ru.afanasev.diplom.config.ConfigProperties;
 import ru.afanasev.diplom.object.dto.generalDtos.CalendarDtoResponse;
@@ -33,7 +34,7 @@ import ru.afanasev.diplom.service.SettingsService;
 import ru.afanasev.diplom.service.TagService;
 import ru.afanasev.diplom.service.TagServiceImpl;
 
-@Controller
+@RestController
 @RequestMapping("/api")
 public class ApiGeneralController {
 
@@ -63,7 +64,6 @@ public class ApiGeneralController {
 
 
 	@GetMapping(value = "/init", produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
 	public InitDtoResponse init() {
 
 		return configProperties.getInit();
@@ -72,7 +72,6 @@ public class ApiGeneralController {
 
 
 	@GetMapping(value = "/calendar/", produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
 	public CalendarDtoResponse getCalendar(@RequestParam(required = false) Integer[] year) {
 		
 		return CalendarMapper.getCalendarDtoResponse(postService.getYears(),
@@ -81,7 +80,6 @@ public class ApiGeneralController {
 
 
 	@GetMapping(value = "/tag/", produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
 	public TagDtoResponse getTag(@RequestParam(required = false) String tag) {
 		
 		return TagMapper.entityToTagDtoResponse(tagService.getAllweight(tag));
@@ -89,7 +87,6 @@ public class ApiGeneralController {
 	}
 	
 	@GetMapping(value = "/settings",produces =  MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
 	public Map<String, Boolean> getSettings () {
 		return SettingsMapper.entityToSettingsDtoResponse(settingsService.getGlobalSettings());
 	}

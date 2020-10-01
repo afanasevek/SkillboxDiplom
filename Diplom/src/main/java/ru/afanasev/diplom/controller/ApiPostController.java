@@ -13,6 +13,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -28,6 +29,8 @@ import ru.afanasev.diplom.object.dto.postDtos.PostAltDto;
 import ru.afanasev.diplom.object.dto.postDtos.PostAltDtoResponse;
 import ru.afanasev.diplom.object.dto.postDtos.PostDtoByIdResponse;
 import ru.afanasev.diplom.object.dto.postDtos.PostDtoResponse;
+import ru.afanasev.diplom.object.dto.postDtos.SendPostDtoRequest;
+import ru.afanasev.diplom.object.dto.postDtos.SendPostDtoResponse;
 import ru.afanasev.diplom.service.PostService;
 import ru.afanasev.diplom.service.PostServiceImpl;
 
@@ -35,8 +38,12 @@ import ru.afanasev.diplom.service.PostServiceImpl;
 @RequestMapping("/api/post")
 public class ApiPostController {
 
-	@Autowired
-	private PostService postservice;
+	private final PostService postservice;
+
+	public ApiPostController(PostService postservice) {
+		super();
+		this.postservice = postservice;
+	}
 
 	@GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
 	public PostDtoResponse getAllPosts(@RequestParam Integer offset, @RequestParam Integer limit,
@@ -62,15 +69,18 @@ public class ApiPostController {
 	@GetMapping(value = "/byTag", produces = MediaType.APPLICATION_JSON_VALUE)
 	public PostAltDtoResponse getByTagPosts(@RequestParam Integer offset, @RequestParam Integer limit,
 			@RequestParam String tag) {
-		return postservice.getPostsByTag(offset, limit, tag);
+
+		List<PostAltDto> listPostsByTag = postservice.getPostsByTag(offset, limit, tag);
+
+		return PostMapper.entityToApiPostAltDtoResponse(listPostsByTag.size(), listPostsByTag);
 	}
 
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public PostDtoByIdResponse getById(@AuthenticationPrincipal User user, @PathVariable Integer id) {
-		
+
 		Post post = postservice.getPostById(user, id);
 		List<PostComment> listComments = postservice.getListCommentsById(id);
-		
+
 		return PostMapper.entityToApiPostDtoByIdResponse(post, UserMapper.entitytoUserNoPhotoDto(post),
 				CommentMapper.entityToCommentDto(listComments), postservice.getTagByPostId(id));
 	}
@@ -78,9 +88,15 @@ public class ApiPostController {
 	@GetMapping(value = "/moderation", produces = MediaType.APPLICATION_JSON_VALUE)
 	public PostAltDtoResponse getModerationPosts(@AuthenticationPrincipal User user, @RequestParam Integer offset,
 			@RequestParam Integer limit, @RequestParam String status) {
-		
+
 		List<PostAltDto> listPosts = postservice.getListModerationPostByModerator(user, offset, limit, status);
 
 		return PostMapper.entityToApiPostAltDtoResponse(listPosts.size(), listPosts);
+	}
+
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	public SendPostDtoResponse sendPost(SendPostDtoRequest post, @AuthenticationPrincipal User user) {
+			
+		return postservice.sendPost(post, user);
 	}
 }
