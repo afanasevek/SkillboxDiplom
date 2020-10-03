@@ -1,14 +1,10 @@
 package ru.afanasev.diplom.service;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.time.LocalDateTime;
 import java.util.Base64;
-import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
@@ -18,10 +14,7 @@ import com.github.cage.GCage;
 
 import net.bytebuddy.utility.RandomString;
 import ru.afanasev.diplom.object.User;
-import ru.afanasev.diplom.object.dto.authDtos.CaptchaDtoResponse;
 import ru.afanasev.diplom.object.dto.authDtos.LoginDtoRequest;
-import ru.afanasev.diplom.object.dto.mapper.CaptchaMapper;
-import ru.afanasev.diplom.object.dto.userDtos.UserLoginRequest;
 import ru.afanasev.diplom.object.repository.CaptchaRepository;
 import ru.afanasev.diplom.object.repository.UserRepository;
 
@@ -61,17 +54,16 @@ public class AuthServiceImpl implements AuthService {
 		base64.append(PREFIX);
 		base64.append(encodedString);
 		file.delete();
-		
+
 		return base64.toString();
 
 	}
-	
+
 	@Override
 	public User postLogin(LoginDtoRequest request) {
 		User user = userRepository.findByEmail(request.getE_mail()).get();
 		return user;
 	}
-
 
 	private String getImageName() {
 		StringBuilder nameString = new StringBuilder();
@@ -81,9 +73,5 @@ public class AuthServiceImpl implements AuthService {
 
 		return nameString.toString();
 	}
-	
 
-	
-
-	
 }

@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import ru.afanasev.diplom.object.GlobalSettings;
 
 @Repository
-public interface SettingsRepository extends JpaRepository<GlobalSettings, Integer>{
+public interface SettingsRepository extends JpaRepository<GlobalSettings, Integer> {
 
 }

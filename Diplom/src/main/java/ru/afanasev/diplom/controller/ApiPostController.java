@@ -1,22 +1,14 @@
 package ru.afanasev.diplom.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-//import org.springframework.security.access.prepost.PreAuthorize;
-//import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import ru.afanasev.diplom.object.Post;
@@ -32,7 +24,6 @@ import ru.afanasev.diplom.object.dto.postDtos.PostDtoResponse;
 import ru.afanasev.diplom.object.dto.postDtos.SendPostDtoRequest;
 import ru.afanasev.diplom.object.dto.postDtos.SendPostDtoResponse;
 import ru.afanasev.diplom.service.PostService;
-import ru.afanasev.diplom.service.PostServiceImpl;
 
 @RestController
 @RequestMapping("/api")
@@ -96,7 +87,7 @@ public class ApiPostController {
 
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public SendPostDtoResponse sendPost(SendPostDtoRequest post, @AuthenticationPrincipal User user) {
-			
+
 		return postservice.sendPost(post, user);
 	}
 }

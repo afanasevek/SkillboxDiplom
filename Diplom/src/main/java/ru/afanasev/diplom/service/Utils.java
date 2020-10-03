@@ -7,6 +7,7 @@ public class Utils {
 		String returnText = text.replaceAll("\\<[^>]*>", "");
 		return returnText;
 	}
+
 	public static String generateUUID() {
 		UUID secret = UUID.randomUUID();
 		return secret.toString();

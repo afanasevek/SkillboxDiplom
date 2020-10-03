@@ -2,23 +2,24 @@ package ru.afanasev.diplom.object.dto.postDtos;
 
 import java.util.List;
 
-import lombok.Data;
-
 public class PostAltDtoResponse {
 	private Integer count;
-	private List<PostAltDto> listPosts;
+	private List<PostAltDto> posts;
 	public Integer getCount() {
 		return count;
 	}
 	public void setCount(Integer count) {
 		this.count = count;
 	}
-	public List<PostAltDto> getListPosts() {
-		return listPosts;
+	public List<PostAltDto> getPosts() {
+		return posts;
 	}
-	public void setListPosts(List<PostAltDto> listPosts) {
-		this.listPosts = listPosts;
+	public void setPosts(List<PostAltDto> posts) {
+		this.posts = posts;
 	}
+	
 	
 	
 }
+
+

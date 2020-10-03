@@ -1,7 +1,5 @@
 package ru.afanasev.diplom.object.dto.postDtos;
 
-import java.sql.Date;
-
 public class SendPostDtoRequest {
 	private Long timestamp;
 	private Byte active;

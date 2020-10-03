@@ -453,7 +453,7 @@ class ApiPostControllerTest {
 		testList.add(post03);
 		PostAltDtoResponse res = new PostAltDtoResponse();
 		res.setCount(1);
-		res.setListPosts(testList);
+		res.setPosts(testList);
 
 		mocMvc.perform(get("/api/post/byDate").param("offset", "0").param("limit", "10").param("date", "2020-01-01"))
 				.andDo(print()).andExpect(status().isOk())
@@ -477,7 +477,7 @@ class ApiPostControllerTest {
 	PostAltDtoResponse res = new PostAltDtoResponse();
 	List<PostAltDto> listPosts = new ArrayList<>();
 	listPosts.add(test);
-	res.setListPosts(listPosts);
+	res.setPosts(listPosts);
 	res.setCount(1);
 		
 		mocMvc.perform(get("/api/post/byTag").param("offset", "0").param("limit", "10").param("tag", "hope"))

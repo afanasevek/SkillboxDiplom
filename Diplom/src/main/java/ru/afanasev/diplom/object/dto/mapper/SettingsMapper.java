@@ -7,11 +7,11 @@ import java.util.Map;
 import ru.afanasev.diplom.object.GlobalSettings;
 
 public class SettingsMapper {
-	
+
 	public static Map<String, Boolean> entityToSettingsDtoResponse(List<GlobalSettings> listSettings) {
-			
+
 		Map<String, Boolean> settingMap = new LinkedHashMap<>();
-		for(GlobalSettings settings : listSettings) {
+		for (GlobalSettings settings : listSettings) {
 			Boolean value;
 			if (settings.getValue().equals("yes")) {
 				value = true;
@@ -21,10 +21,8 @@ public class SettingsMapper {
 			settingMap.put(settings.getCode(), value);
 		}
 
-		
-		
 		return settingMap;
 
 	}
-	
+
 }

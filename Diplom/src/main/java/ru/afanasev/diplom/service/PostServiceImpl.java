@@ -1,47 +1,38 @@
 package ru.afanasev.diplom.service;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import ru.afanasev.diplom.object.ModerationStatus;
 import ru.afanasev.diplom.object.Post;
 import ru.afanasev.diplom.object.PostComment;
 import ru.afanasev.diplom.object.Tag;
 import ru.afanasev.diplom.object.User;
-import ru.afanasev.diplom.object.dto.generalDtos.CalendarDtoResponse;
-import ru.afanasev.diplom.object.dto.mapper.CalendarMapper;
-import ru.afanasev.diplom.object.dto.mapper.CommentMapper;
 import ru.afanasev.diplom.object.dto.mapper.PostMapper;
 import ru.afanasev.diplom.object.dto.mapper.UserMapper;
 import ru.afanasev.diplom.object.dto.postDtos.PostAltDto;
 import ru.afanasev.diplom.object.dto.postDtos.PostAltDtoResponse;
 import ru.afanasev.diplom.object.dto.postDtos.PostDto;
-import ru.afanasev.diplom.object.dto.postDtos.PostDtoByIdResponse;
 import ru.afanasev.diplom.object.dto.postDtos.PostDtoResponse;
 import ru.afanasev.diplom.object.dto.postDtos.SendPostDtoRequest;
 import ru.afanasev.diplom.object.dto.postDtos.SendPostDtoResponse;
-import ru.afanasev.diplom.object.dto.postDtos.SendPostErrorDto;
-import ru.afanasev.diplom.object.dto.userDtos.UserNoPhotoDto;
+import ru.afanasev.diplom.object.dto.postDtos.SendPostErrorDtoResponse;
 import ru.afanasev.diplom.object.repository.PostRepository;
 
 @Service
 public class PostServiceImpl implements PostService {
 
-	
 	private final PostRepository postRepository;
-	
+
 	private final static String TITLE_NOT_ENOUGTH_LENGTH_STRING = "��������� ���������� ������� ��������";
 	private final static String TITLE_NULL = "��������� �� ����������";
 	private final static String TEXT_NOT_ENOUGTH_LENGTH_STRING = "�����  ���������� ������� ��������";
@@ -75,7 +66,7 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public List<PostAltDto> getPostsByTag(Integer offset, Integer limit, String query) {
-		
+
 		return getListPostsByTag(offset, limit, query);
 	}
 
@@ -88,7 +79,6 @@ public class PostServiceImpl implements PostService {
 		return getPostsCalendar(year);
 	}
 
-	
 	@Override
 	public Post getPostById(User user, Integer id) {
 		Post post = getPostById(id);
@@ -101,7 +91,7 @@ public class PostServiceImpl implements PostService {
 		}
 		return post;
 	}
-	
+
 	@Override
 	public List<PostAltDto> getListModerationPostByModerator(User moderator, Integer offset, Integer limit,
 			String status) {
@@ -126,21 +116,22 @@ public class PostServiceImpl implements PostService {
 
 		return list;
 	}
+
 	@Override
 	public SendPostDtoResponse sendPost(SendPostDtoRequest request, User user) {
-		if (request.getTitle().length()<3||request.getText().length()<50) {
-			SendPostErrorDto sendPostErrorDto = new SendPostErrorDto();
+		if (request.getTitle().length() < 3 || request.getText().length() < 50) {
+			SendPostErrorDtoResponse sendPostErrorDto = new SendPostErrorDtoResponse();
 			sendPostErrorDto.setResult(false);
-			if (request.getTitle().length()<3&&(request.getTitle().length()!=0)) {
+			if (request.getTitle().length() < 3 && (request.getTitle().length() != 0)) {
 				sendPostErrorDto.addErrors("title", TITLE_NOT_ENOUGTH_LENGTH_STRING);
 			}
-			if (request.getTitle().length()==0) {
+			if (request.getTitle().length() == 0) {
 				sendPostErrorDto.addErrors("title", TITLE_NULL);
 			}
-			if (request.getText().length()<3&&(request.getText().length()!=0)) {
+			if (request.getText().length() < 3 && (request.getText().length() != 0)) {
 				sendPostErrorDto.addErrors("title", TEXT_NOT_ENOUGTH_LENGTH_STRING);
 			}
-			if (request.getText().length()==0) {
+			if (request.getText().length() == 0) {
 				sendPostErrorDto.addErrors("title", TEXT_NULL);
 			}
 			return sendPostErrorDto;
@@ -149,15 +140,16 @@ public class PostServiceImpl implements PostService {
 			return new SendPostDtoResponse();
 		}
 	}
+
 	@Override
 	public Integer getModerationCountPost() {
 		return postRepository.getCountModerationPost();
 	}
-	
-	private void sendPostToDb (SendPostDtoRequest request, User user) {
+
+	private void sendPostToDb(SendPostDtoRequest request, User user) {
 		postRepository.save(PostMapper.reqToPost(request, user));
 	}
-	
+
 	private List<PostDto> getListPosts(Integer offset, Integer limit, String mode) {
 
 		List<PostDto> listPosts = new ArrayList<>();
@@ -166,7 +158,7 @@ public class PostServiceImpl implements PostService {
 		switch (mode) {
 		case "recent":
 
-			findPosts = postRepository.findModerationAndActivePostsSortbyRecent(page);
+			findPosts = postRepository.findModerationAndActivePostsSortbyRecent(page, LocalDateTime.now());
 			if (findPosts.isEmpty()) {
 				return listPosts;
 			}
@@ -174,7 +166,7 @@ public class PostServiceImpl implements PostService {
 
 			break;
 		case "popular":
-			findPosts = postRepository.findModerationAndActivePostsSortbyPopular(page);
+			findPosts = postRepository.findModerationAndActivePostsSortbyPopular(page, LocalDateTime.now());
 			if (findPosts.isEmpty()) {
 				return listPosts;
 			}
@@ -182,7 +174,7 @@ public class PostServiceImpl implements PostService {
 
 			break;
 		case "best":
-			findPosts = postRepository.findModerationAndActivePostsSortbyBest(page);
+			findPosts = postRepository.findModerationAndActivePostsSortbyBest(page, LocalDateTime.now());
 			if (findPosts.isEmpty()) {
 				return listPosts;
 			}
@@ -190,7 +182,7 @@ public class PostServiceImpl implements PostService {
 
 			break;
 		case "early":
-			findPosts = postRepository.findModerationAndActivePostsSortbyEarly(page);
+			findPosts = postRepository.findModerationAndActivePostsSortbyEarly(page, LocalDateTime.now());
 			if (findPosts.isEmpty()) {
 				return listPosts;
 			}
@@ -208,9 +200,9 @@ public class PostServiceImpl implements PostService {
 		Pageable page = PageRequest.of(offset, limit + offset);
 		List<Post> findPosts = new ArrayList<>();
 		if (query.isEmpty()) {
-			findPosts = postRepository.findModerationAndActivePosts(page);
+			findPosts = postRepository.findModerationAndActivePosts(page, LocalDateTime.now());
 		} else {
-			findPosts = postRepository.findModerationAndActivePostsByQuery(page, query);
+			findPosts = postRepository.findModerationAndActivePostsByQuery(page, query, LocalDateTime.now());
 			if (findPosts.isEmpty()) {
 				return listPosts;
 			}
@@ -242,7 +234,7 @@ public class PostServiceImpl implements PostService {
 		List<PostAltDto> listPosts = new ArrayList<>();
 		Pageable page = PageRequest.of(offset, limit + offset);
 		List<Post> findPosts = new ArrayList<>();
-		findPosts = postRepository.findModerationAndActivePostsByDate(page, query);
+		findPosts = postRepository.findModerationAndActivePostsByDate(page, query, LocalDateTime.now());
 		if (findPosts.isEmpty()) {
 			return listPosts;
 		}
@@ -257,7 +249,7 @@ public class PostServiceImpl implements PostService {
 		List<PostAltDto> listPosts = new ArrayList<>();
 		Pageable page = PageRequest.of(offset, limit + offset);
 		List<Post> findPosts = new ArrayList<>();
-		findPosts = postRepository.findModerationAndActivePostsByTag(page, query);
+		findPosts = postRepository.findModerationAndActivePostsByTag(page, query, LocalDateTime.now());
 		if (findPosts.isEmpty()) {
 			return listPosts;
 		}

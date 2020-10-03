@@ -14,7 +14,7 @@ public interface TagRepository extends JpaRepository<Tag, Integer> {
 
 	@Query(value = "select t.name from Tag t")
 	List<String> findAllNames();
-	
+
 	@Query(value = "select t.name from Tag t where t.name like %:query%")
-	List<String> findAllNamesByQuery(@Param("query")String  query);
+	List<String> findAllNamesByQuery(@Param("query") String query);
 }

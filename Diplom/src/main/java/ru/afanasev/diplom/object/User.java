@@ -10,7 +10,6 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,17 +19,9 @@ import javax.persistence.Table;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-
 @Entity
 @Table(name = "users")
-public class User implements UserDetails
-{
+public class User implements UserDetails {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -183,13 +174,10 @@ public class User implements UserDetails
 	public List<Post> getListModPosts() {
 		return listModPosts;
 	}
-	
-	
-	
-	
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		Set<Roles> roles= new HashSet<Roles>();
+		Set<Roles> roles = new HashSet<Roles>();
 		roles.add(Roles.USER);
 		if (isModerator == 1) {
 			roles.add(Roles.MODERATOR);
@@ -201,7 +189,6 @@ public class User implements UserDetails
 	public String getUsername() {
 		return email;
 	}
-	
 
 	@Override
 	public boolean isAccountNonExpired() {

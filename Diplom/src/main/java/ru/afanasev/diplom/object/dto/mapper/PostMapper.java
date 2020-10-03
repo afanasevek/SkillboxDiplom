@@ -17,13 +17,12 @@ import ru.afanasev.diplom.object.dto.postDtos.PostDto;
 import ru.afanasev.diplom.object.dto.postDtos.PostDtoByIdResponse;
 import ru.afanasev.diplom.object.dto.postDtos.PostDtoResponse;
 import ru.afanasev.diplom.object.dto.postDtos.SendPostDtoRequest;
-import ru.afanasev.diplom.object.dto.tagDtos.TagDto;
 import ru.afanasev.diplom.object.dto.userDtos.UserNoPhotoDto;
 import ru.afanasev.diplom.service.PostServiceImpl;
 import ru.afanasev.diplom.service.Utils;
 
 public class PostMapper {
-		
+
 	public static PostDto entityToApiPostDto(UserNoPhotoDto user, Post post) {
 		PostDto postDto = new PostDto();
 		postDto.setId(post.getId());
@@ -37,19 +36,18 @@ public class PostMapper {
 		postDto.setDislikeCount(dislikeCount);
 		postDto.setCommentCount(post.getListComments().size());
 		postDto.setViewCount(post.getViewCount());
-		
+
 		return postDto;
 	}
-	
+
 	public static PostDtoResponse entityToApiPostDtoResponse(Integer count, List<PostDto> posts) {
 		PostDtoResponse response = new PostDtoResponse();
 		response.setCount(count);
 		response.setPosts(posts);
-		
+
 		return response;
 	}
-	
-	
+
 	public static PostAltDto entityToApiPostAltDto(UserNoPhotoDto user, Post post) {
 		PostAltDto postDto = new PostAltDto();
 		postDto.setId(post.getId());
@@ -63,51 +61,48 @@ public class PostMapper {
 		postDto.setDislikeCount(dislikeCount);
 		postDto.setCommentCount(post.getListComments().size());
 		postDto.setViewCount(post.getViewCount());
-		
+
 		return postDto;
 	}
-	
+
 	public static PostAltDtoResponse entityToApiPostAltDtoResponse(Integer count, List<PostAltDto> listPosts) {
 		PostAltDtoResponse response = new PostAltDtoResponse();
 		response.setCount(count);
-		response.setListPosts(listPosts);
-		
+		response.setPosts(listPosts);
+
 		return response;
 	}
-	
-	public static PostDtoByIdResponse entityToApiPostDtoByIdResponse (
-			Post post,
-			UserNoPhotoDto user,
-			List<CommentDto> comments,
-			List<String>tags) 
-	{
+
+	public static PostDtoByIdResponse entityToApiPostDtoByIdResponse(Post post, UserNoPhotoDto user,
+			List<CommentDto> comments, List<String> tags) {
 		PostDtoByIdResponse postDtoByIdResponse = new PostDtoByIdResponse();
 		postDtoByIdResponse.setId(post.getId());
 		postDtoByIdResponse.setTimestamp(Timestamp.valueOf(post.getTime()).getTime());
-		switch(post.getIsActive()) {
-			case 1:
-				postDtoByIdResponse.setActive(true);
-				break;
-			case -1:
-				postDtoByIdResponse.setActive(false);
-				break;
+		switch (post.getIsActive()) {
+		case 1:
+			postDtoByIdResponse.setActive(true);
+			break;
+		case -1:
+			postDtoByIdResponse.setActive(false);
+			break;
 		}
-		
+
 		postDtoByIdResponse.setUser(user);
 		postDtoByIdResponse.setTitle(post.getTitle());
 		postDtoByIdResponse.setText(post.getText());
-		postDtoByIdResponse.setLikeCount((int) post.getListVotes().stream().filter(x-> x.getValue()>0).count());
-		postDtoByIdResponse.setDislikeCount((int) post.getListVotes().stream().filter(x-> x.getValue()<0).count());
+		postDtoByIdResponse.setLikeCount((int) post.getListVotes().stream().filter(x -> x.getValue() > 0).count());
+		postDtoByIdResponse.setDislikeCount((int) post.getListVotes().stream().filter(x -> x.getValue() < 0).count());
 		postDtoByIdResponse.setViewCount(post.getViewCount());
 		postDtoByIdResponse.setComments(comments);
 		postDtoByIdResponse.setTags(tags);
 
 		return postDtoByIdResponse;
 	}
-	
+
 	public static Post reqToPost(SendPostDtoRequest request, User user) {
 		Post post = new Post();
-		LocalDateTime time =  LocalDateTime.ofInstant(Instant.ofEpochMilli(request.getTimestamp()), TimeZone.getDefault().toZoneId());
+		LocalDateTime time = LocalDateTime.ofInstant(Instant.ofEpochMilli(request.getTimestamp()),
+				TimeZone.getDefault().toZoneId());
 		if (time.isBefore(LocalDateTime.now())) {
 			time = LocalDateTime.now();
 		}
@@ -117,13 +112,13 @@ public class PostMapper {
 		post.setTitle(request.getTitle());
 		post.setText(request.getText());
 		post.setModerationStatus(ModerationStatus.NEW);
-		for(String nameTag : request.getTags()) {
+		for (String nameTag : request.getTags()) {
 			Tag tag = new Tag();
 			tag.setName(nameTag);
 			post.addTag(tag);
 		}
-		
+
 		return post;
-		
+
 	}
 }

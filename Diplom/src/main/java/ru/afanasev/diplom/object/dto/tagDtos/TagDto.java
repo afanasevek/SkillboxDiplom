@@ -1,12 +1,9 @@
 package ru.afanasev.diplom.object.dto.tagDtos;
 
-import lombok.Data;
-
-
 public class TagDto {
-	
+
 	private String name;
-	
+
 	private Double weight;
 
 	public String getName() {
@@ -24,6 +21,5 @@ public class TagDto {
 	public void setWeight(Double weight) {
 		this.weight = weight;
 	}
-	
-	
+
 }

@@ -5,5 +5,5 @@ import java.util.List;
 import ru.afanasev.diplom.object.GlobalSettings;
 
 public interface SettingsService {
-	List<GlobalSettings>  getGlobalSettings();
+	List<GlobalSettings> getGlobalSettings();
 }

@@ -17,27 +17,27 @@ public class UserMapper {
 
 		return userNoPhotoDto;
 	}
-	
+
 	public static UserWithPhotoDto entitytoUserWithPhotoDto(PostComment comment) {
-		
+
 		UserWithPhotoDto user = new UserWithPhotoDto();
 		user.setId(comment.getUser().getId());
 		user.setName(comment.getUser().getName());
 		user.setPhoto(comment.getUser().getPhoto());
-		
+
 		return user;
 	}
 
 	public static UserLoginDtoResponse entityToUserLoginDtoResponse(User user, Integer moderationCountPost) {
 		if (user == null) {
-			
+
 			return null;
 		}
 		UserLoginDtoResponse userDto = new UserLoginDtoResponse();
 		userDto.setId(user.getId());
 		userDto.setEmail(user.getEmail());
 		userDto.setModerationCount(moderationCountPost);
-		if (user.getIsModerator()== -1) {
+		if (user.getIsModerator() == -1) {
 			userDto.setModerationCount(0);
 			userDto.setModeration(false);
 			userDto.setSettings(false);
@@ -46,7 +46,7 @@ public class UserMapper {
 			userDto.setSettings(true);
 		}
 		userDto.setPhoto(user.getPhoto());
-		
+
 		return userDto;
 	}
 

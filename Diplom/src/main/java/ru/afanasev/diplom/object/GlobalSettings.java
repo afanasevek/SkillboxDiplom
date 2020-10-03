@@ -4,10 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-
 @Entity
 @Table(name = "global_settings")
 public class GlobalSettings {
@@ -16,9 +12,9 @@ public class GlobalSettings {
 	private Integer id;
 
 	private String code;
-	
+
 	private String name;
-	
+
 	private String value;
 
 	public Integer getId() {
@@ -52,6 +48,5 @@ public class GlobalSettings {
 	public void setValue(String value) {
 		this.value = value;
 	}
-	
-	
+
 }
