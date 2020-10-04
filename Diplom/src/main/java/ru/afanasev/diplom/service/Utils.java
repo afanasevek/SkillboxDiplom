@@ -22,9 +22,11 @@ public class Utils {
 	}
 	
 	public static void rescaleImage(File image) throws IOException {
-		ResampleOp resampleOp = new ResampleOp (100,200);
+		
+		ResampleOp resampleOp = new ResampleOp (100,35);
 		BufferedImage getImage = ImageIO.read(image);
 		BufferedImage scaleIm = resampleOp.filter(getImage, null);
+		ImageIO.write(scaleIm, "png", new File(image.getAbsolutePath()));
 		
 	}
 }

@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.github.cage.Cage;
 import com.github.cage.GCage;
@@ -37,11 +38,11 @@ public class AuthServiceImpl implements AuthService {
 	}
 
 	@Override
+	@Transactional
 	public String getCaptcha(String secretv2) throws Exception {
 
 		Cage cage = new GCage();
 		String name = getImageName();
-		System.out.println(name);
 		String code;
 		OutputStream os = new FileOutputStream(name, false);
 		try {
@@ -51,13 +52,7 @@ public class AuthServiceImpl implements AuthService {
 			os.close();
 		}
 		File file = new File(name);
-		ResampleOp resampleOp = new ResampleOp (100,35);
-		BufferedImage getImage = ImageIO.read(file);
-		BufferedImage scaleIm = resampleOp.filter(getImage, null);
-		
-		File newFile = new File(file.getAbsolutePath());
-		ImageIO.write(scaleIm, "png", newFile);
-		
+		Utils.rescaleImage(file);
 		captchaRepository.insertCaptcha(code, LocalDateTime.now(), secretv2);
 		byte[] fileContent = FileUtils.readFileToByteArray(file);
 		String encodedString = Base64.getEncoder().encodeToString(fileContent);

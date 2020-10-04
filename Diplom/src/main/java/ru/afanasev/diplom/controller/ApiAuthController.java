@@ -1,6 +1,7 @@
 package ru.afanasev.diplom.controller;
 
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import liquibase.pro.packaged.iF;
 import ru.afanasev.diplom.object.User;
 import ru.afanasev.diplom.object.dto.authDtos.CaptchaDtoResponse;
 import ru.afanasev.diplom.object.dto.authDtos.LoginDtoRequest;
@@ -32,10 +32,11 @@ public class ApiAuthController {
 
 	private final AuthService captchaService;
 	private final PostService postService;
-	private final static Map<String, Integer> USERS = new HashMap<>();
+	private final static Map<String, Integer> USERS = new Hashtable<String, Integer>();
 	private final AuthenticationManager authenticationManager;
 
-	public ApiAuthController(AuthService captchaService, PostService postService, AuthenticationManager authenticationManager) {
+	public ApiAuthController(AuthService captchaService, PostService postService,
+			AuthenticationManager authenticationManager) {
 		this.captchaService = captchaService;
 		this.postService = postService;
 		this.authenticationManager = authenticationManager;
@@ -44,14 +45,14 @@ public class ApiAuthController {
 	@GetMapping("api/auth/captcha")
 	public CaptchaDtoResponse getCaptcha() throws Exception {
 		String secret = Utils.generateUUID();
-
 		return CaptchaMapper.getCaptchaDtoResponse(captchaService.getCaptcha(secret), secret);
 	}
 
 	@PostMapping("/api/auth/login")
 	public LoginDtoResponse login(@RequestBody LoginDtoRequest login) {
-		
-		Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login.getE_mail(), login.getPassword()));
+
+		Authentication auth = authenticationManager
+				.authenticate(new UsernamePasswordAuthenticationToken(login.getE_mail(), login.getPassword()));
 		SecurityContextHolder.getContext().setAuthentication(auth);
 		User user = captchaService.postLogin(login);
 		if (user != null) {
@@ -78,7 +79,7 @@ public class ApiAuthController {
 					postService.getModerationCountPost());
 
 			return LoginMapper.getLoginDtoRespose(userDto);
-			
+
 		} else {
 
 			LoginErrorDtoResponse error = new LoginErrorDtoResponse();

@@ -68,7 +68,7 @@ public class ApiPostController {
 	}
 
 	@GetMapping(value = "/post/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public PostDtoByIdResponse getById(@AuthenticationPrincipal User user, @PathVariable Integer id) {
+	public PostDtoByIdResponse getById(                                                          User user, @PathVariable Integer id) {
 
 		Post post = postservice.getPostById(user, id);
 		List<PostComment> listComments = postservice.getListCommentsById(id);

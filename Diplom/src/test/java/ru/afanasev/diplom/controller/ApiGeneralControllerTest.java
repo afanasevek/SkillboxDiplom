@@ -197,7 +197,7 @@ class ApiGeneralControllerTest {
 		init.setSubtitle("Developer's Stories");
 		init.setPhone("+7 999 516 80-45");
 		init.setTitle("DevPub");
-		mocMvc.perform(get("/api/init/")).andDo(print()).andExpect(status().isOk())
+		mocMvc.perform(get("/api/init")).andDo(print()).andExpect(status().isOk())
 				.andExpect(content().string(objectMapper.writeValueAsString(init)));
 
 	}
@@ -214,7 +214,7 @@ class ApiGeneralControllerTest {
 		posts.put("2020-01-01", 1);
 		posts.put("2020-01-02", 1);
 		calendarDtoResponse.setPosts(posts);
-		mocMvc.perform(get("/api/calendar/")).andDo(print()).andExpect(status().isOk())
+		mocMvc.perform(get("/api/calendar")).andDo(print()).andExpect(status().isOk())
 				.andExpect(content().string(objectMapper.writeValueAsString(calendarDtoResponse)));
 	}
 
@@ -229,7 +229,7 @@ class ApiGeneralControllerTest {
 		Map<String, Integer> posts = new TreeMap<>();
 		posts.put("2005-01-01", 1);
 		calendarDtoResponse.setPosts(posts);
-		mocMvc.perform(get("/api/calendar/").param("year", "2005")).andDo(print()).andExpect(status().isOk())
+		mocMvc.perform(get("/api/calendar").param("year", "2005")).andDo(print()).andExpect(status().isOk())
 				.andExpect(content().string(objectMapper.writeValueAsString(calendarDtoResponse)));
 
 	}
@@ -250,7 +250,7 @@ class ApiGeneralControllerTest {
 		tags.add(tagDto2);
 		tagDtoResponse.setTags(tags);
 
-		mocMvc.perform(get("/api/tag/")).andDo(print()).andExpect(status().isOk())
+		mocMvc.perform(get("/api/tag")).andDo(print()).andExpect(status().isOk())
 				.andExpect(content().string(objectMapper.writeValueAsString(tagDtoResponse)));
 
 	}

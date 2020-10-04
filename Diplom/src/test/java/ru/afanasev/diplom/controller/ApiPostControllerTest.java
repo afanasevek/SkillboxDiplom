@@ -1,6 +1,7 @@
 package ru.afanasev.diplom.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -16,8 +17,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ru.afanasev.diplom.object.ModerationStatus;
@@ -26,10 +33,13 @@ import ru.afanasev.diplom.object.PostComment;
 import ru.afanasev.diplom.object.PostVote;
 import ru.afanasev.diplom.object.Tag;
 import ru.afanasev.diplom.object.User;
+import ru.afanasev.diplom.object.dto.authDtos.LoginDtoRequest;
+import ru.afanasev.diplom.object.dto.authDtos.LoginSuccessDtoResponse;
 import ru.afanasev.diplom.object.dto.postDtos.PostAltDto;
 import ru.afanasev.diplom.object.dto.postDtos.PostAltDtoResponse;
 import ru.afanasev.diplom.object.dto.postDtos.PostDto;
 import ru.afanasev.diplom.object.dto.postDtos.PostDtoResponse;
+import ru.afanasev.diplom.object.dto.userDtos.UserLoginDtoResponse;
 import ru.afanasev.diplom.object.dto.userDtos.UserNoPhotoDto;
 import ru.afanasev.diplom.object.repository.PostCommentRepository;
 import ru.afanasev.diplom.object.repository.PostRepository;
@@ -56,6 +66,8 @@ class ApiPostControllerTest {
 	private ObjectMapper objectMapper;
 	@Autowired
 	private TagRepository tagRepository;
+	@Autowired
+	private  AuthenticationManager authenticationManager;
 	@BeforeEach
 	public void setUp() {
 
@@ -173,6 +185,14 @@ class ApiPostControllerTest {
 		post3.setViewCount(1);
 		post3.setTime(LocalDateTime.of(2020, 1, 1, 0, 0, 0));
 		postRepository.save(post3);
+		
+		LoginDtoRequest log = new LoginDtoRequest();
+		log.setE_mail("test@test.com");
+		log.setPassword("test");
+		
+		Authentication auth = authenticationManager
+				.authenticate(new UsernamePasswordAuthenticationToken(log.getE_mail(), log.getPassword()));
+		SecurityContextHolder.getContext().setAuthentication(auth);
 
 	}
 
@@ -483,6 +503,18 @@ class ApiPostControllerTest {
 		mocMvc.perform(get("/api/post/byTag").param("offset", "0").param("limit", "10").param("tag", "hope"))
 		.andDo(print()).andExpect(status().isOk())
 		.andExpect(content().string(objectMapper.writeValueAsString(res)));
+
+	}
+	
+	@Test
+	void testModeration() throws  Exception {
+
+		
+		mocMvc.perform(post("/api/post/moderation")
+//				.contentType(MediaType.APPLICATION_JSON)
+//				.content((objectMapper.writeValueAsString(request)))
+				).andDo(print()).andExpect(status().isOk());
+//		.andExpect(content().string(objectMapper.writeValueAsString(response)));
 
 	}
 
