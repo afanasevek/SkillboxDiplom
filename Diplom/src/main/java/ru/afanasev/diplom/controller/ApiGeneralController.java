@@ -5,12 +5,15 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ru.afanasev.diplom.config.ConfigProperties;
+import ru.afanasev.diplom.object.User;
 import ru.afanasev.diplom.object.dto.generalDtos.CalendarDtoResponse;
 import ru.afanasev.diplom.object.dto.generalDtos.InitDtoResponse;
 import ru.afanasev.diplom.object.dto.mapper.CalendarMapper;
@@ -50,9 +53,11 @@ public class ApiGeneralController {
 
 	}
 
-	@GetMapping(value = "/calendar/", produces = MediaType.APPLICATION_JSON_VALUE)
-	public CalendarDtoResponse getCalendar(@RequestParam(required = false) Integer[] year) {
-
+	@GetMapping(value = "/calendar", produces = MediaType.APPLICATION_JSON_VALUE)
+	public CalendarDtoResponse getCalendar(@RequestParam(required = false) Integer[] year, @AuthenticationPrincipal User user) {
+		if (user != null) {
+			user.getAuthorities().forEach(System.out::println);
+		}
 		return CalendarMapper.getCalendarDtoResponse(postService.getYears(), postService.getCalendar(year));
 	}
 

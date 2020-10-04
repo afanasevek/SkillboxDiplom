@@ -7,6 +7,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -85,9 +86,9 @@ public class ApiPostController {
 		return PostMapper.entityToApiPostAltDtoResponse(listPosts.size(), listPosts);
 	}
 
-	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public SendPostDtoResponse sendPost(SendPostDtoRequest post, @AuthenticationPrincipal User user) {
-
+	@PostMapping(value = "/post", produces = MediaType.APPLICATION_JSON_VALUE)
+	public SendPostDtoResponse sendPost(@RequestBody SendPostDtoRequest post, @AuthenticationPrincipal User user) {
+		System.out.println(user.getEmail());
 		return postservice.sendPost(post, user);
 	}
 }

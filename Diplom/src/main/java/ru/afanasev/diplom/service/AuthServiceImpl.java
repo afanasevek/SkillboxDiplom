@@ -1,16 +1,20 @@
 package ru.afanasev.diplom.service;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.time.LocalDateTime;
 import java.util.Base64;
 
+import javax.imageio.ImageIO;
+
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 
 import com.github.cage.Cage;
 import com.github.cage.GCage;
+import com.mortennobel.imagescaling.ResampleOp;
 
 import net.bytebuddy.utility.RandomString;
 import ru.afanasev.diplom.object.User;
@@ -47,6 +51,13 @@ public class AuthServiceImpl implements AuthService {
 			os.close();
 		}
 		File file = new File(name);
+		ResampleOp resampleOp = new ResampleOp (100,35);
+		BufferedImage getImage = ImageIO.read(file);
+		BufferedImage scaleIm = resampleOp.filter(getImage, null);
+		
+		File newFile = new File(file.getAbsolutePath());
+		ImageIO.write(scaleIm, "png", newFile);
+		
 		captchaRepository.insertCaptcha(code, LocalDateTime.now(), secretv2);
 		byte[] fileContent = FileUtils.readFileToByteArray(file);
 		String encodedString = Base64.getEncoder().encodeToString(fileContent);
@@ -64,6 +75,8 @@ public class AuthServiceImpl implements AuthService {
 		User user = userRepository.findByEmail(request.getE_mail()).get();
 		return user;
 	}
+	
+	
 
 	private String getImageName() {
 		StringBuilder nameString = new StringBuilder();

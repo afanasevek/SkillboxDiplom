@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -118,6 +120,7 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
+	@Transactional
 	public SendPostDtoResponse sendPost(SendPostDtoRequest request, User user) {
 		if (request.getTitle().length() < 3 || request.getText().length() < 50) {
 			SendPostErrorDtoResponse sendPostErrorDto = new SendPostErrorDtoResponse();

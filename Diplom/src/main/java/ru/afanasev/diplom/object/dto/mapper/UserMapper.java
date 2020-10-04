@@ -35,6 +35,7 @@ public class UserMapper {
 		}
 		UserLoginDtoResponse userDto = new UserLoginDtoResponse();
 		userDto.setId(user.getId());
+		userDto.setName(user.getName());
 		userDto.setEmail(user.getEmail());
 		userDto.setModerationCount(moderationCountPost);
 		if (user.getIsModerator() == -1) {

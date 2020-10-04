@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -251,6 +252,19 @@ class ApiGeneralControllerTest {
 
 		mocMvc.perform(get("/api/tag/")).andDo(print()).andExpect(status().isOk())
 				.andExpect(content().string(objectMapper.writeValueAsString(tagDtoResponse)));
+
+	}
+	
+	@Test
+	void testGetSettings() throws Exception {
+
+		Map<String, Boolean> settings = new LinkedHashMap<String, Boolean>();
+		settings.put("MULTIUSER_MODE", true);
+		settings.put("POST_PREMODERATION", true);
+		settings.put("STATISTICS_IS_PUBLIC", true);
+
+		mocMvc.perform(get("/api/settings")).andDo(print()).andExpect(status().isOk())
+				.andExpect(content().string(objectMapper.writeValueAsString(settings)));
 
 	}
 
