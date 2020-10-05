@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.time.LocalDateTime;
 import java.util.Base64;
+import java.util.Optional;
 
 import javax.imageio.ImageIO;
 
@@ -67,7 +68,13 @@ public class AuthServiceImpl implements AuthService {
 
 	@Override
 	public User postLogin(LoginDtoRequest request) {
-		User user = userRepository.findByEmail(request.getE_mail()).get();
+		
+		
+		 Optional<User> userOptional = userRepository.findByEmail(request.getE_mail());
+		 if (userOptional.isEmpty()) {
+			return null;
+		}
+		 User user = userOptional.get();
 		return user;
 	}
 	

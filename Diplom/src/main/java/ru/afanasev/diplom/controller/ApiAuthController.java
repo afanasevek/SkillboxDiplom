@@ -50,19 +50,20 @@ public class ApiAuthController {
 
 	@PostMapping("/api/auth/login")
 	public LoginDtoResponse login(@RequestBody LoginDtoRequest login) {
-
+		User user = captchaService.postLogin(login);
+		
+		if (user == null) {
+			return LoginMapper.getLoginError();
+		}
+		
 		Authentication auth = authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(login.getE_mail(), login.getPassword()));
 		SecurityContextHolder.getContext().setAuthentication(auth);
-		User user = captchaService.postLogin(login);
-		if (user != null) {
-			USERS.put(user.getEmail(), user.getId());
-		}
-
+		USERS.put(user.getEmail(), user.getId());
 		UserLoginDtoResponse userDto = UserMapper.entityToUserLoginDtoResponse(user,
 				postService.getModerationCountPost());
 
-		return LoginMapper.getLoginDtoRespose(userDto);
+		return LoginMapper.getGoodLoginDtoRespose(userDto);
 
 	}
 
@@ -78,7 +79,7 @@ public class ApiAuthController {
 			UserLoginDtoResponse userDto = UserMapper.entityToUserLoginDtoResponse(user,
 					postService.getModerationCountPost());
 
-			return LoginMapper.getLoginDtoRespose(userDto);
+			return LoginMapper.getGoodLoginDtoRespose(userDto);
 
 		} else {
 

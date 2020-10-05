@@ -68,7 +68,7 @@ public class ApiPostController {
 	}
 
 	@GetMapping(value = "/post/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public PostDtoByIdResponse getById(                                                          User user, @PathVariable Integer id) {
+	public PostDtoByIdResponse getById(User user, @PathVariable Integer id) {
 
 		Post post = postservice.getPostById(user, id);
 		List<PostComment> listComments = postservice.getListCommentsById(id);
@@ -86,7 +86,7 @@ public class ApiPostController {
 		return PostMapper.entityToApiPostAltDtoResponse(listPosts.size(), listPosts);
 	}
 
-	@PostMapping(value = "/post", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/post",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public SendPostDtoResponse sendPost(@RequestBody SendPostDtoRequest post, @AuthenticationPrincipal User user) {
 
 		return postservice.sendPost(post, user);

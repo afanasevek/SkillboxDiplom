@@ -35,10 +35,10 @@ public class PostServiceImpl implements PostService {
 
 	private final PostRepository postRepository;
 
-	private final static String TITLE_NOT_ENOUGTH_LENGTH_STRING = "��������� ���������� ������� ��������";
-	private final static String TITLE_NULL = "��������� �� ����������";
-	private final static String TEXT_NOT_ENOUGTH_LENGTH_STRING = "�����  ���������� ������� ��������";
-	private final static String TEXT_NULL = "�����  �� ����������";
+	private final static String TITLE_NOT_ENOUGTH_LENGTH_STRING = "Заголовок публикации слишком короткий";
+	private final static String TITLE_NULL = "Заголовок не установлен";
+	private final static String TEXT_NOT_ENOUGTH_LENGTH_STRING = "Текст публикации слишком короткий";
+	private final static String TEXT_NULL = "Текст не установлен";
 
 	public PostServiceImpl(PostRepository postRepository) {
 		super();
@@ -125,17 +125,17 @@ public class PostServiceImpl implements PostService {
 		if (request.getTitle().length() < 3 || request.getText().length() < 50) {
 			SendPostErrorDtoResponse sendPostErrorDto = new SendPostErrorDtoResponse();
 			sendPostErrorDto.setResult(false);
-			if (request.getTitle().length() < 3 && (request.getTitle().length() != 0)) {
+			if (Utils.removeHtmlTags(request.getTitle()).length() < 3 && (Utils.removeHtmlTags(request.getTitle()).length() != 0)) {
 				sendPostErrorDto.addErrors("title", TITLE_NOT_ENOUGTH_LENGTH_STRING);
 			}
-			if (request.getTitle().length() == 0) {
+			if (Utils.removeHtmlTags(request.getTitle()).length() == 0) {
 				sendPostErrorDto.addErrors("title", TITLE_NULL);
 			}
-			if (request.getText().length() < 3 && (request.getText().length() != 0)) {
-				sendPostErrorDto.addErrors("title", TEXT_NOT_ENOUGTH_LENGTH_STRING);
+			if (Utils.removeHtmlTags(request.getText()).length() < 3 && (Utils.removeHtmlTags(request.getText()).length() != 0)) {
+				sendPostErrorDto.addErrors("text", TEXT_NOT_ENOUGTH_LENGTH_STRING);
 			}
-			if (request.getText().length() == 0) {
-				sendPostErrorDto.addErrors("title", TEXT_NULL);
+			if (Utils.removeHtmlTags(request.getText()).length() == 0) {
+				sendPostErrorDto.addErrors("text", TEXT_NULL);
 			}
 			return sendPostErrorDto;
 		} else {

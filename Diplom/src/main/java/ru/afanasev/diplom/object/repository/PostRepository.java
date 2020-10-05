@@ -83,7 +83,7 @@ public interface PostRepository extends PagingAndSortingRepository<Post, Integer
 	@Query(value = "select p from Post p where p.isActive = 1 and p.moderationStatus = :status")
 	List<Post> findModerationPostsNew(Pageable page, @Param("status") ModerationStatus status);
 
-	@Query(value = "select count(p) from Post p where p.moderationStatus = 'NEW' and p.isActive = -1")
+	@Query(value = "select count(p) from Post p where p.moderationStatus = 'NEW' and p.isActive = 1")
 	Integer getCountModerationPost();
 
 }

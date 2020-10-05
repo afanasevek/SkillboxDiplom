@@ -29,10 +29,7 @@ public class UserMapper {
 	}
 
 	public static UserLoginDtoResponse entityToUserLoginDtoResponse(User user, Integer moderationCountPost) {
-		if (user == null) {
 
-			return null;
-		}
 		UserLoginDtoResponse userDto = new UserLoginDtoResponse();
 		userDto.setId(user.getId());
 		userDto.setName(user.getName());
