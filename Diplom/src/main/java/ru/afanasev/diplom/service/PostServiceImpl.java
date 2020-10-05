@@ -104,15 +104,15 @@ public class PostServiceImpl implements PostService {
 		switch (status) {
 		case "accepted":
 			statusValue = ModerationStatus.ACCEPTED.toString();
-			addListAltPosts(postRepository.findModerationPostsAcceptedOrDeclined(page, statusValue, moderator), list);
+			addListAltPosts(postRepository.findModerationPostsAcceptedOrDeclined(page, ModerationStatus.ACCEPTED, moderator), list);
 			break;
 		case "declined":
 			statusValue = ModerationStatus.DECLINED.toString();
-			addListAltPosts(postRepository.findModerationPostsAcceptedOrDeclined(page, statusValue, moderator), list);
+			addListAltPosts(postRepository.findModerationPostsAcceptedOrDeclined(page, ModerationStatus.DECLINED, moderator), list);
 			break;
 		case "new":
 			statusValue = ModerationStatus.NEW.toString();
-			addListAltPosts(postRepository.findModerationPostsNew(page, statusValue), list);
+			addListAltPosts(postRepository.findModerationPostsNew(page, ModerationStatus.NEW), list);
 			break;
 		}
 

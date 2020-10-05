@@ -11,6 +11,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import ru.afanasev.diplom.object.ModerationStatus;
 import ru.afanasev.diplom.object.Post;
 import ru.afanasev.diplom.object.PostComment;
 import ru.afanasev.diplom.object.Tag;
@@ -76,11 +77,11 @@ public interface PostRepository extends PagingAndSortingRepository<Post, Integer
 	List<Tag> findTagsByPostId(Integer id);
 
 	@Query(value = "select p from Post p where p.isActive = 1 and p.moderator = :moderator and p.moderationStatus = :status")
-	List<Post> findModerationPostsAcceptedOrDeclined(Pageable page, @Param("status") String status,
+	List<Post> findModerationPostsAcceptedOrDeclined(Pageable page, @Param("status") ModerationStatus status,
 			@Param("moderator") User moderator);
 
 	@Query(value = "select p from Post p where p.isActive = 1 and p.moderationStatus = :status")
-	List<Post> findModerationPostsNew(Pageable page, @Param("status") String status);
+	List<Post> findModerationPostsNew(Pageable page, @Param("status") ModerationStatus status);
 
 	@Query(value = "select count(p) from Post p where p.moderationStatus = 'NEW' and p.isActive = -1")
 	Integer getCountModerationPost();

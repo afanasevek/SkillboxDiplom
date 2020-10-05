@@ -17,14 +17,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ru.afanasev.diplom.object.ModerationStatus;
@@ -34,12 +32,10 @@ import ru.afanasev.diplom.object.PostVote;
 import ru.afanasev.diplom.object.Tag;
 import ru.afanasev.diplom.object.User;
 import ru.afanasev.diplom.object.dto.authDtos.LoginDtoRequest;
-import ru.afanasev.diplom.object.dto.authDtos.LoginSuccessDtoResponse;
 import ru.afanasev.diplom.object.dto.postDtos.PostAltDto;
 import ru.afanasev.diplom.object.dto.postDtos.PostAltDtoResponse;
 import ru.afanasev.diplom.object.dto.postDtos.PostDto;
 import ru.afanasev.diplom.object.dto.postDtos.PostDtoResponse;
-import ru.afanasev.diplom.object.dto.userDtos.UserLoginDtoResponse;
 import ru.afanasev.diplom.object.dto.userDtos.UserNoPhotoDto;
 import ru.afanasev.diplom.object.repository.PostCommentRepository;
 import ru.afanasev.diplom.object.repository.PostRepository;
@@ -67,7 +63,8 @@ class ApiPostControllerTest {
 	@Autowired
 	private TagRepository tagRepository;
 	@Autowired
-	private  AuthenticationManager authenticationManager;
+	private AuthenticationManager authenticationManager;
+
 	@BeforeEach
 	public void setUp() {
 
@@ -116,10 +113,7 @@ class ApiPostControllerTest {
 		user1.setIsModerator((byte) 1);
 		user1.setRegTime(LocalDateTime.now().minusMonths(10).minusDays(2));
 		userRepository.save(user1);
-		
 
-
-		
 		Post post1 = new Post();
 		post1.setId(2);
 		post1.setIsActive((byte) 1);
@@ -185,14 +179,8 @@ class ApiPostControllerTest {
 		post3.setViewCount(1);
 		post3.setTime(LocalDateTime.of(2020, 1, 1, 0, 0, 0));
 		postRepository.save(post3);
+
 		
-		LoginDtoRequest log = new LoginDtoRequest();
-		log.setE_mail("test@test.com");
-		log.setPassword("test");
-		
-		Authentication auth = authenticationManager
-				.authenticate(new UsernamePasswordAuthenticationToken(log.getE_mail(), log.getPassword()));
-		SecurityContextHolder.getContext().setAuthentication(auth);
 
 	}
 
@@ -452,7 +440,7 @@ class ApiPostControllerTest {
 				.andDo(print()).andExpect(status().isOk())
 				.andExpect(content().string(objectMapper.writeValueAsString(res)));
 	}
-	
+
 	@Test
 	void testGetAllPostsByDate() throws Exception {
 
@@ -479,44 +467,49 @@ class ApiPostControllerTest {
 				.andDo(print()).andExpect(status().isOk())
 				.andExpect(content().string(objectMapper.writeValueAsString(res)));
 	}
+
 	@Test
-	void testGetByTagPosts() throws Exception{
-	PostAltDto test = new PostAltDto();
-	test.setId(2);
-	test.setAnnounce("testing so much2");
-	test.setCommentCount(0);
-	test.setDislikeCount(0);
-	test.setTimestap(Timestamp.valueOf(LocalDateTime.of(1990, 1, 1, 0, 0, 0)).getTime());
-	test.setTitle("testing 2..");
-	test.setViewCount(15000);
-	test.setLikeCount(2);
-	UserNoPhotoDto user = new UserNoPhotoDto();
-	user.setId(2);
-	user.setName("test_user2");
-	test.setUser(user);
-	PostAltDtoResponse res = new PostAltDtoResponse();
-	List<PostAltDto> listPosts = new ArrayList<>();
-	listPosts.add(test);
-	res.setPosts(listPosts);
-	res.setCount(1);
-		
+	void testGetByTagPosts() throws Exception {
+		PostAltDto test = new PostAltDto();
+		test.setId(2);
+		test.setAnnounce("testing so much2");
+		test.setCommentCount(0);
+		test.setDislikeCount(0);
+		test.setTimestap(Timestamp.valueOf(LocalDateTime.of(1990, 1, 1, 0, 0, 0)).getTime());
+		test.setTitle("testing 2..");
+		test.setViewCount(15000);
+		test.setLikeCount(2);
+		UserNoPhotoDto user = new UserNoPhotoDto();
+		user.setId(2);
+		user.setName("test_user2");
+		test.setUser(user);
+		PostAltDtoResponse res = new PostAltDtoResponse();
+		List<PostAltDto> listPosts = new ArrayList<>();
+		listPosts.add(test);
+		res.setPosts(listPosts);
+		res.setCount(1);
+
 		mocMvc.perform(get("/api/post/byTag").param("offset", "0").param("limit", "10").param("tag", "hope"))
-		.andDo(print()).andExpect(status().isOk())
-		.andExpect(content().string(objectMapper.writeValueAsString(res)));
+				.andDo(print()).andExpect(status().isOk())
+				.andExpect(content().string(objectMapper.writeValueAsString(res)));
 
 	}
-	
-	@Test
-	void testModeration() throws  Exception {
 
-		
+	@Test
+	void testModeration() throws Exception {
+		LoginDtoRequest log = new LoginDtoRequest();
+		log.setE_mail("test@test.com");
+		log.setPassword("test");
+
+		Authentication auth = authenticationManager
+				.authenticate(new UsernamePasswordAuthenticationToken(log.getE_mail(), log.getPassword()));
+		SecurityContextHolder.getContext().setAuthentication(auth);
 		mocMvc.perform(post("/api/post/moderation")
 //				.contentType(MediaType.APPLICATION_JSON)
 //				.content((objectMapper.writeValueAsString(request)))
-				).andDo(print()).andExpect(status().isOk());
+		).andDo(print()).andExpect(status().isOk());
 //		.andExpect(content().string(objectMapper.writeValueAsString(response)));
 
 	}
-
 
 }

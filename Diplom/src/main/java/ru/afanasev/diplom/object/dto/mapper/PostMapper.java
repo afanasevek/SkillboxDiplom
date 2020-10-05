@@ -111,6 +111,7 @@ public class PostMapper {
 		post.setUser(user);
 		post.setTitle(request.getTitle());
 		post.setText(request.getText());
+		post.setViewCount(0);
 		post.setModerationStatus(ModerationStatus.NEW);
 		for (String nameTag : request.getTags()) {
 			Tag tag = new Tag();
