@@ -88,7 +88,7 @@ public class ApiPostController {
 
 	@PostMapping(value = "/post", produces = MediaType.APPLICATION_JSON_VALUE)
 	public SendPostDtoResponse sendPost(@RequestBody SendPostDtoRequest post, @AuthenticationPrincipal User user) {
-		System.out.println(user.getEmail());
+
 		return postservice.sendPost(post, user);
 	}
 }
