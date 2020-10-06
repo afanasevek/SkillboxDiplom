@@ -1,5 +1,6 @@
 package ru.afanasev.diplom.controller;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -21,6 +22,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -497,18 +499,16 @@ class ApiPostControllerTest {
 
 	@Test
 	void testModeration() throws Exception {
-		LoginDtoRequest log = new LoginDtoRequest();
-		log.setE_mail("test@test.com");
-		log.setPassword("test");
-
-		Authentication auth = authenticationManager
-				.authenticate(new UsernamePasswordAuthenticationToken(log.getE_mail(), log.getPassword()));
-		SecurityContextHolder.getContext().setAuthentication(auth);
-		mocMvc.perform(post("/api/post/moderation")
-//				.contentType(MediaType.APPLICATION_JSON)
-//				.content((objectMapper.writeValueAsString(request)))
+		User user = new User();
+		user.setId(1);
+		user.setName("test_user");
+		user.setEmail("test@test.com");
+		user.setPassword("test");
+		user.setIsModerator((byte) 1);
+		user.setRegTime(LocalDateTime.now().minusMonths(4).minusDays(12));
+		
+		mocMvc.perform(get("/api/post/moderation").with(user(user)).param("offset", "0").param("limit", "10").param("status", "NEW")
 		).andDo(print()).andExpect(status().isOk());
-//		.andExpect(content().string(objectMapper.writeValueAsString(response)));
 
 	}
 

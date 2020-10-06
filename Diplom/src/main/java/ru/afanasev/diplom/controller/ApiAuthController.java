@@ -1,5 +1,10 @@
 package ru.afanasev.diplom.controller;
 
+import static ru.afanasev.diplom.object.dto.mapper.CaptchaMapper.getCaptchaDtoResponse;
+import static ru.afanasev.diplom.object.dto.mapper.LoginMapper.getGoodLoginDtoRespose;
+import static ru.afanasev.diplom.object.dto.mapper.LoginMapper.getLoginError;
+import static ru.afanasev.diplom.object.dto.mapper.UserMapper.entityToUserLoginDtoResponse;
+
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
@@ -45,7 +50,7 @@ public class ApiAuthController {
 	@GetMapping("api/auth/captcha")
 	public CaptchaDtoResponse getCaptcha() throws Exception {
 		String secret = Utils.generateUUID();
-		return CaptchaMapper.getCaptchaDtoResponse(captchaService.getCaptcha(secret), secret);
+		return getCaptchaDtoResponse(captchaService.getCaptcha(secret), secret);
 	}
 
 	@PostMapping("/api/auth/login")
@@ -53,17 +58,17 @@ public class ApiAuthController {
 		User user = captchaService.postLogin(login);
 		
 		if (user == null) {
-			return LoginMapper.getLoginError();
+			return getLoginError();
 		}
 		
 		Authentication auth = authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(login.getE_mail(), login.getPassword()));
 		SecurityContextHolder.getContext().setAuthentication(auth);
 		USERS.put(user.getEmail(), user.getId());
-		UserLoginDtoResponse userDto = UserMapper.entityToUserLoginDtoResponse(user,
+		UserLoginDtoResponse userDto = entityToUserLoginDtoResponse(user,
 				postService.getModerationCountPost());
 
-		return LoginMapper.getGoodLoginDtoRespose(userDto);
+		return getGoodLoginDtoRespose(userDto);
 
 	}
 
@@ -76,10 +81,10 @@ public class ApiAuthController {
 				error.setResult(false);
 				return error;
 			}
-			UserLoginDtoResponse userDto = UserMapper.entityToUserLoginDtoResponse(user,
+			UserLoginDtoResponse userDto = entityToUserLoginDtoResponse(user,
 					postService.getModerationCountPost());
 
-			return LoginMapper.getGoodLoginDtoRespose(userDto);
+			return getGoodLoginDtoRespose(userDto);
 
 		} else {
 

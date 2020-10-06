@@ -1,5 +1,9 @@
 package ru.afanasev.diplom.controller;
 
+import static ru.afanasev.diplom.object.dto.mapper.CalendarMapper.getCalendarDtoResponse;
+import static ru.afanasev.diplom.object.dto.mapper.SettingsMapper.entityToSettingsDtoResponse;
+import static ru.afanasev.diplom.object.dto.mapper.TagMapper.entityToTagDtoResponse;
+
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -58,18 +62,18 @@ public class ApiGeneralController {
 		if (user != null) {
 			user.getAuthorities().forEach(System.out::println);
 		}
-		return CalendarMapper.getCalendarDtoResponse(postService.getYears(), postService.getCalendar(year));
+		return getCalendarDtoResponse(postService.getYears(), postService.getCalendar(year));
 	}
 
 	@GetMapping(value = "/tag", produces = MediaType.APPLICATION_JSON_VALUE)
 	public TagDtoResponse getTag(@RequestParam(required = false) String tag) {
 
-		return TagMapper.entityToTagDtoResponse(tagService.getAllweight(tag));
+		return entityToTagDtoResponse(tagService.getAllweight(tag));
 
 	}
 
 	@GetMapping(value = "/settings", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Map<String, Boolean> getSettings() {
-		return SettingsMapper.entityToSettingsDtoResponse(settingsService.getGlobalSettings());
+		return entityToSettingsDtoResponse(settingsService.getGlobalSettings());
 	}
 }

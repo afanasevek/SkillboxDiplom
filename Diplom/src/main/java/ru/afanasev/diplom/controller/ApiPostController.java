@@ -1,5 +1,10 @@
 package ru.afanasev.diplom.controller;
 
+import static ru.afanasev.diplom.object.dto.mapper.CommentMapper.entityToCommentDto;
+import static ru.afanasev.diplom.object.dto.mapper.PostMapper.entityToApiPostAltDtoResponse;
+import static ru.afanasev.diplom.object.dto.mapper.PostMapper.entityToApiPostDtoByIdResponse;
+import static ru.afanasev.diplom.object.dto.mapper.UserMapper.entitytoUserNoPhotoDto;
+
 import java.util.List;
 
 import org.springframework.http.MediaType;
@@ -64,7 +69,7 @@ public class ApiPostController {
 
 		List<PostAltDto> listPostsByTag = postservice.getPostsByTag(offset, limit, tag);
 
-		return PostMapper.entityToApiPostAltDtoResponse(listPostsByTag.size(), listPostsByTag);
+		return entityToApiPostAltDtoResponse(listPostsByTag.size(), listPostsByTag);
 	}
 
 	@GetMapping(value = "/post/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -73,8 +78,8 @@ public class ApiPostController {
 		Post post = postservice.getPostById(user, id);
 		List<PostComment> listComments = postservice.getListCommentsById(id);
 
-		return PostMapper.entityToApiPostDtoByIdResponse(post, UserMapper.entitytoUserNoPhotoDto(post),
-				CommentMapper.entityToCommentDto(listComments), postservice.getTagByPostId(id));
+		return entityToApiPostDtoByIdResponse(post, entitytoUserNoPhotoDto(post),
+				entityToCommentDto(listComments), postservice.getTagByPostId(id));
 	}
 
 	@GetMapping(value = "/post/moderation", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -83,12 +88,16 @@ public class ApiPostController {
 
 		List<PostAltDto> listPosts = postservice.getListModerationPostByModerator(user, offset, limit, status);
 
-		return PostMapper.entityToApiPostAltDtoResponse(listPosts.size(), listPosts);
+		return entityToApiPostAltDtoResponse(listPosts.size(), listPosts);
 	}
 
 	@PostMapping(value = "/post",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public SendPostDtoResponse sendPost(@RequestBody SendPostDtoRequest post, @AuthenticationPrincipal User user) {
 
 		return postservice.sendPost(post, user);
+	}
+	@PostMapping(value = "/comment",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public void sendComment(@AuthenticationPrincipal User user) {
+		
 	}
 }

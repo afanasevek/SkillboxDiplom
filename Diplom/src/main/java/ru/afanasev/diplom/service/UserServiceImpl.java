@@ -11,7 +11,7 @@ import ru.afanasev.diplom.object.repository.UserRepository;
 
 @Service
 public class UserServiceImpl implements UserService {
-
+	
 	private final UserRepository userRepository;
 	@Autowired
 	public UserServiceImpl(UserRepository userRepository) {
