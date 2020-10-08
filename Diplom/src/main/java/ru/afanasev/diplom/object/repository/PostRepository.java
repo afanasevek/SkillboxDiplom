@@ -85,5 +85,6 @@ public interface PostRepository extends PagingAndSortingRepository<Post, Integer
 
 	@Query(value = "select count(p) from Post p where p.moderationStatus = 'NEW' and p.isActive = 1")
 	Integer getCountModerationPost();
-
+	
+	
 }

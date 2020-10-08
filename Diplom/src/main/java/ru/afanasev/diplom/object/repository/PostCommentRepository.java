@@ -8,4 +8,7 @@ import ru.afanasev.diplom.object.PostComment;
 @Repository
 public interface PostCommentRepository extends JpaRepository<PostComment, Integer> {
 
+
+
+	
 }

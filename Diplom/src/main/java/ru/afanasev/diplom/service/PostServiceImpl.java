@@ -10,10 +10,12 @@ import java.util.TreeMap;
 
 import javax.transaction.Transactional;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import ch.qos.logback.classic.Logger;
 import ru.afanasev.diplom.object.ModerationStatus;
 import ru.afanasev.diplom.object.Post;
 import ru.afanasev.diplom.object.PostComment;
@@ -39,6 +41,7 @@ public class PostServiceImpl implements PostService {
 	private final static String TITLE_NULL = "Заголовок не установлен";
 	private final static String TEXT_NOT_ENOUGTH_LENGTH_STRING = "Текст публикации слишком короткий";
 	private final static String TEXT_NULL = "Текст не установлен";
+
 
 	public PostServiceImpl(PostRepository postRepository) {
 		super();
@@ -86,6 +89,7 @@ public class PostServiceImpl implements PostService {
 		Post post = getPostById(id);
 		if (user != null) {
 			if (user.getIsModerator() != 1 || post.getUser().equals(user) == false) {
+			
 				increaseView(id);
 			}
 		} else {
@@ -148,6 +152,8 @@ public class PostServiceImpl implements PostService {
 	public Integer getModerationCountPost() {
 		return postRepository.getCountModerationPost();
 	}
+	
+
 
 	private void sendPostToDb(SendPostDtoRequest request, User user) {
 		postRepository.save(PostMapper.reqToPost(request, user));

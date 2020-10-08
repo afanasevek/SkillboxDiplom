@@ -1,5 +1,6 @@
 package ru.afanasev.diplom.controller;
 
+import static ru.afanasev.diplom.object.dto.mapper.CommentMapper.enityIdToSendCommentSeccessDtoResponse;
 import static ru.afanasev.diplom.object.dto.mapper.CommentMapper.entityToCommentDto;
 import static ru.afanasev.diplom.object.dto.mapper.PostMapper.entityToApiPostAltDtoResponse;
 import static ru.afanasev.diplom.object.dto.mapper.PostMapper.entityToApiPostDtoByIdResponse;
@@ -20,50 +21,52 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.afanasev.diplom.object.Post;
 import ru.afanasev.diplom.object.PostComment;
 import ru.afanasev.diplom.object.User;
+import ru.afanasev.diplom.object.dto.commentDtos.CommentDtoRequest;
+import ru.afanasev.diplom.object.dto.commentDtos.SendCommentSeccessDtoResponse;
 import ru.afanasev.diplom.object.dto.mapper.CommentMapper;
-import ru.afanasev.diplom.object.dto.mapper.PostMapper;
-import ru.afanasev.diplom.object.dto.mapper.UserMapper;
 import ru.afanasev.diplom.object.dto.postDtos.PostAltDto;
 import ru.afanasev.diplom.object.dto.postDtos.PostAltDtoResponse;
 import ru.afanasev.diplom.object.dto.postDtos.PostDtoByIdResponse;
 import ru.afanasev.diplom.object.dto.postDtos.PostDtoResponse;
 import ru.afanasev.diplom.object.dto.postDtos.SendPostDtoRequest;
 import ru.afanasev.diplom.object.dto.postDtos.SendPostDtoResponse;
+import ru.afanasev.diplom.service.CommentService;
 import ru.afanasev.diplom.service.PostService;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/")
 public class ApiPostController {
 
 	private final PostService postservice;
+	private final CommentService commentService;
 
-	public ApiPostController(PostService postservice) {
-		super();
+	public ApiPostController(PostService postservice, CommentService commentService) {
+		this.commentService =  commentService;
 		this.postservice = postservice;
 	}
 
-	@GetMapping(value = "/post", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "post", produces = MediaType.APPLICATION_JSON_VALUE)
 	public PostDtoResponse getAllPosts(@RequestParam Integer offset, @RequestParam Integer limit,
 			@RequestParam String mode) {
 
 		return postservice.getPosts(offset, limit, mode);
 	}
 
-	@GetMapping(value = "/post/search/", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "post/search/", produces = MediaType.APPLICATION_JSON_VALUE)
 	public PostDtoResponse getSearchPosts(@RequestParam Integer offset, @RequestParam Integer limit,
 			@RequestParam String query) {
 
 		return postservice.getPostsByQuery(offset, limit, query);
 	}
 
-	@GetMapping(value = "/post/byDate", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "post/byDate", produces = MediaType.APPLICATION_JSON_VALUE)
 	public PostAltDtoResponse getByDatePosts(@RequestParam Integer offset, @RequestParam Integer limit,
 			@RequestParam String date) {
 
 		return postservice.getPostsByDate(offset, limit, date);
 	}
 
-	@GetMapping(value = "/post/byTag", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "post/byTag", produces = MediaType.APPLICATION_JSON_VALUE)
 	public PostAltDtoResponse getByTagPosts(@RequestParam Integer offset, @RequestParam Integer limit,
 			@RequestParam String tag) {
 
@@ -72,8 +75,8 @@ public class ApiPostController {
 		return entityToApiPostAltDtoResponse(listPostsByTag.size(), listPostsByTag);
 	}
 
-	@GetMapping(value = "/post/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public PostDtoByIdResponse getById(User user, @PathVariable Integer id) {
+	@GetMapping(value = "post/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public PostDtoByIdResponse getById(@AuthenticationPrincipal User user, @PathVariable Integer id) {
 
 		Post post = postservice.getPostById(user, id);
 		List<PostComment> listComments = postservice.getListCommentsById(id);
@@ -82,7 +85,7 @@ public class ApiPostController {
 				entityToCommentDto(listComments), postservice.getTagByPostId(id));
 	}
 
-	@GetMapping(value = "/post/moderation", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "post/moderation", produces = MediaType.APPLICATION_JSON_VALUE)
 	public PostAltDtoResponse getModerationPosts(@AuthenticationPrincipal User user, @RequestParam Integer offset,
 			@RequestParam Integer limit, @RequestParam String status) {
 
@@ -91,13 +94,13 @@ public class ApiPostController {
 		return entityToApiPostAltDtoResponse(listPosts.size(), listPosts);
 	}
 
-	@PostMapping(value = "/post",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "post",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public SendPostDtoResponse sendPost(@RequestBody SendPostDtoRequest post, @AuthenticationPrincipal User user) {
 
 		return postservice.sendPost(post, user);
 	}
-	@PostMapping(value = "/comment",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public void sendComment(@AuthenticationPrincipal User user) {
-		
+	@PostMapping(value = "comment",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public SendCommentSeccessDtoResponse sendComment(@AuthenticationPrincipal User user, @RequestBody CommentDtoRequest request) {
+		return enityIdToSendCommentSeccessDtoResponse(commentService.sendCommentToPost(user, request));
 	}
 }

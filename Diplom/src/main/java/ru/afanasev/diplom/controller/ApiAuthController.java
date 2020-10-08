@@ -53,7 +53,7 @@ public class ApiAuthController {
 		return getCaptchaDtoResponse(captchaService.getCaptcha(secret), secret);
 	}
 
-	@PostMapping("/api/auth/login")
+	@PostMapping("api/auth/login")
 	public LoginDtoResponse login(@RequestBody LoginDtoRequest login) {
 		User user = captchaService.postLogin(login);
 		

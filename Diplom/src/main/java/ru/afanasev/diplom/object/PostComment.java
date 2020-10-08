@@ -26,11 +26,11 @@ public class PostComment {
 	@JoinColumn(name = "parent_id", referencedColumnName = "id")
 	private PostComment postComment;
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne()
 	@JoinColumn(name = "post_id", referencedColumnName = "id")
 	private Post post;
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne()
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private User user;
 

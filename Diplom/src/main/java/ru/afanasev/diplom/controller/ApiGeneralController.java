@@ -29,7 +29,7 @@ import ru.afanasev.diplom.service.SettingsService;
 import ru.afanasev.diplom.service.TagService;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/")
 public class ApiGeneralController {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -50,14 +50,14 @@ public class ApiGeneralController {
 		this.settingsService = settingsService;
 	}
 
-	@GetMapping(value = "/init", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "init", produces = MediaType.APPLICATION_JSON_VALUE)
 	public InitDtoResponse init() {
 
 		return configProperties.getInit();
 
 	}
 
-	@GetMapping(value = "/calendar", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "calendar", produces = MediaType.APPLICATION_JSON_VALUE)
 	public CalendarDtoResponse getCalendar(@RequestParam(required = false) Integer[] year, @AuthenticationPrincipal User user) {
 		if (user != null) {
 			user.getAuthorities().forEach(System.out::println);
@@ -65,14 +65,14 @@ public class ApiGeneralController {
 		return getCalendarDtoResponse(postService.getYears(), postService.getCalendar(year));
 	}
 
-	@GetMapping(value = "/tag", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "tag", produces = MediaType.APPLICATION_JSON_VALUE)
 	public TagDtoResponse getTag(@RequestParam(required = false) String tag) {
 
 		return entityToTagDtoResponse(tagService.getAllweight(tag));
 
 	}
 
-	@GetMapping(value = "/settings", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "settings", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Map<String, Boolean> getSettings() {
 		return entityToSettingsDtoResponse(settingsService.getGlobalSettings());
 	}
