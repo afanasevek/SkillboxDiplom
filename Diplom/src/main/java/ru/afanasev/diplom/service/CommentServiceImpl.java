@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import ru.afanasev.diplom.exeption.CommentException;
 import ru.afanasev.diplom.object.Post;
 import ru.afanasev.diplom.object.PostComment;
 import ru.afanasev.diplom.object.User;
@@ -22,8 +23,16 @@ public class CommentServiceImpl implements CommentService {
 		this.postCommentRepository = postCommentRepository;
 		this.postRepository = postRepository;
 	}
+
 	@Override
 	public Integer sendCommentToPost(User user, CommentDtoRequest request) {
+		if (Utils.removeHtmlTags(request.getText()).length() < 10) {
+			
+		}
+		if (Utils.removeHtmlTags(request.getText()).length() == 0) {
+			
+		}
+		
 		Post post = null;
 		PostComment parentComment = null;
 		Optional<PostComment> commentOptional = null;
@@ -31,15 +40,15 @@ public class CommentServiceImpl implements CommentService {
 
 		if (request.getParent_id() != null) {
 			commentOptional = postCommentRepository.findById(request.getParent_id());
+			if (commentOptional.isEmpty()) {
+				throw new CommentException();
+			}
 			parentComment = commentOptional.get();
-			
-			
-			/*
-			 * exeption выбросить, мол пост не найден, иди нахуй
-			 */
-		} 
+		}
 		if (request.getPost_id() != null) {
 			post = postOptional.get();
+		} else {
+			throw new CommentException();
 		}
 
 		PostComment comment = CommentMapper.requestToEntity(user, request.getText(), post, parentComment);
