@@ -45,6 +45,10 @@ public class AuthServiceImpl implements AuthService {
 		Cage cage = new GCage();
 		String name = getImageName();
 		String code;
+		File file = new File(name);
+		if (!file.exists()) {
+			file.createNewFile();
+		}
 		OutputStream os = new FileOutputStream(name, false);
 		try {
 			code = cage.getTokenGenerator().next();
@@ -52,7 +56,6 @@ public class AuthServiceImpl implements AuthService {
 		} finally {
 			os.close();
 		}
-		File file = new File(name);
 		Utils.rescaleImage(file);
 		captchaRepository.insertCaptcha(code, LocalDateTime.now(), secretv2);
 		byte[] fileContent = FileUtils.readFileToByteArray(file);
